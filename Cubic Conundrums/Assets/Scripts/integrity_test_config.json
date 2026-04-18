@@ -1,0 +1,51 @@
+{
+  "projectName": "Cubic Conundrums",
+  "objects": [
+    {
+      "objectId": "cube_001",
+      "objectName": "PuzzleCube_A",
+      "position": { "x": 0.0, "y": 1.0, "z": 0.0 },
+      "positionTolerance": 0.25,
+      "isActive": true,
+      "spawnedByScript": "CubeSpawner",
+      "spawnOrder": 1,
+      "spawnTimestamp": 2.5,
+      "spawnTimeTolerance": 1.0,
+      "requiredTaskStates": [
+        { "taskKey": "PuzzleStatus", "expectedValue": "Ready" },
+        { "taskKey": "InteractionEnabled", "expectedValue": "True" }
+      ]
+    },
+    {
+      "objectId": "ui_001",
+      "objectName": "InstructionPanel",
+      "position": { "x": 0.0, "y": 0.0, "z": 0.0 },
+      "positionTolerance": 1.0,
+      "isActive": true,
+      "spawnedByScript": "UIManager",
+      "spawnOrder": 2,
+      "spawnTimestamp": 3.0,
+      "spawnTimeTolerance": 1.0,
+      "requiredTaskStates": [
+        { "taskKey": "PanelState", "expectedValue": "Visible" }
+      ]
+    }
+  ],
+  "taskLinks": [
+    {
+      "linkName": "CubeToUI",
+      "sourceObjectName": "PuzzleCube_A",
+      "targetObjectName": "InstructionPanel",
+      "sourceTaskKey": "PuzzleStatus",
+      "targetTaskKey": "PanelState",
+      "requiredSourceValue": "Ready",
+      "requiredTargetValue": "Visible"
+    }
+  ],
+  "uiChecks": [
+    {
+      "objectName": "InstructionPanel",
+      "expectedText": "Solve the cube sequence."
+    }
+  ]
+}

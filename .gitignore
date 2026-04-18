@@ -97,3 +97,15 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+Cubic Conundrums/Library/ArtifactDB
+Cubic Conundrums/Library/PackageCache/com.unity.burst@07790c2d06d9/.Runtime/libburst-llvm-19.dylib
+Cubic Conundrums/Library/PackageCache/com.unity.collections@aea9d3bd5e19/Unity.Collections.LowLevel.ILSupport/source~/Unity.Collections.LowLevel.ILSupport.CodeGen/CollectionsUnsafeUtilityPostProcessor.cs
+Cubic Conundrums/Library/PackageCache/com.unity.collections@aea9d3bd5e19/Unity.Collections.LowLevel.ILSupport/source~/Unity.Collections.LowLevel.ILSupport.CodeGen/CollectionsUnsafeUtilityPostProcessor.cs.meta
+Cubic Conundrums/Library/PackageCache/com.unity.collections@aea9d3bd5e19/Unity.Collections.LowLevel.ILSupport/source~/Unity.Collections.LowLevel.ILSupport.CodeGen/Unity.Collections.LowLevel.ILSupport.CodeGen.asmdef
+Cubic Conundrums/Library/PackageCache/com.unity.collections@aea9d3bd5e19/Unity.Collections.LowLevel.ILSupport/source~/Unity.Collections.LowLevel.ILSupport.CodeGen/Unity.Collections.LowLevel.ILSupport.CodeGen.asmdef.meta
+Cubic Conundrums/Library/PackageCache/com.unity.collections@aea9d3bd5e19/Unity.Collections.LowLevel.ILSupport/source~/Unity.Collections.LowLevel.ILSupport/Unity.Collections.LowLevel.ILSupport.asmdef
+Cubic Conundrums/Library/PackageCache/com.unity.collections@aea9d3bd5e19/Unity.Collections.LowLevel.ILSupport/source~/Unity.Collections.LowLevel.ILSupport/Unity.Collections.LowLevel.ILSupport.asmdef.meta
+Cubic Conundrums/Library/PackageCache/com.unity.render-pipelines.universal@7327e77c1cc2/Tests/Editor/Tools/Converters/ReadonlyMaterialConverter/ReadonlyMaterialConverterTests.MaterialReferenceBuilder.cs.meta
+Cubic Conundrums/Library/PackageCache/com.unity.render-pipelines.universal@7327e77c1cc2/Tests/Editor/Tools/Converters/ReadonlyMaterialConverter/ReadonlyMaterialConverterTests.MaterialReferenceBuilder.cs
+Cubic Conundrums/Library/PackageCache/com.unity.render-pipelines.universal@7327e77c1cc2/Tests/Editor/Tools/Converters/ReadonlyMaterialConverter/ReadonlyMaterialConverterTests.MaterialReferenceChanger.cs
+Cubic Conundrums/Library/PackageCache/com.unity.render-pipelines.universal@7327e77c1cc2/Tests/Editor/Tools/Converters/ReadonlyMaterialConverter/ReadonlyMaterialConverterTests.MaterialReferenceChanger.cs.meta
