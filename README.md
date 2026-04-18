@@ -5,7 +5,17 @@ A game related to working on puzzles on your computer to escape the room.  Diffe
 The name of our group is Group 6.
 
 # Group Member Names: 
-The names of our group members are Lexa Hope, Kay Muckerman, Shivanshu Tilwankar, and Ashly Young.
+The names of our group members are Lexa Hope, Kay Muckerman, Shivanshu Tilwankar, and Ashley Young.
+
+# Current General Goals For Each Member:
+- Lexa H. : Experimenting with creating assets, implementing own puzzle
+- Kay M. : Experimenting with UI, and inventory
+- Shivanshu T. : Implementing own puzzle
+- Ashley Y. : Experimenting with creating assets, and movement mechanics
+This is all subject to change ^^
+
+# Current MVP:
+The current MVP for our game is to get the core game mechanics down, such as movement and interacting with objects / puzzles. Ideally, our MVP should be a single 3D room with 3D assets that the player can move around in. The player should also be able to interact with 2-3 puzzles, which should have win and lose conditions (losing may mean you simply must retry for now).
 
 # The Current Targets of the Game: 
 The target audiences of the game are young adults and kids.  The goal is to keep them interacting with the platform.  This will allow them to experience the whole platform and learn from it.  They will also begin to grasp a basic understanding of game design as well.  The goal is to create a game for people who like puzzles and other types of games that use their brains.
