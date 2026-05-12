@@ -1,0 +1,9 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/PauseMenuStyle.uss?fileID=7433441132597879392&amp;guid=ded1a02a994ae154c9f318fa94fb7a45&amp;type=3#PauseMenuStyle"/>
+    <ui:VisualElement name="Container" style="flex-grow: 1; border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; width: 1920px; height: 1080px; background-color: rgba(0, 0, 0, 0.38); background-image: url(&quot;project://database/Assets/ImportedAssets/StartingScreen.jpg?fileID=2800000&amp;guid=10cd037fb0ed2084ba616cf961caed81&amp;type=3#StartingScreen&quot;);">
+        <ui:Label text="Game Paused" name="Header" enable-rich-text="false" class="header" style="font-size: 100px; -unity-text-align: upper-center; margin-top: 350px; -unity-font-style: bold; color: rgb(1, 4, 5);"/>
+        <ui:Button text="Resume Game" name="ResumeButton" class="button" style="align-self: center; top: 0;"/>
+        <ui:Button text="Main Menu" selectable="true" name="MainMenuButton" class="button" style="align-self: center; top: 0;"/>
+        <ui:Button text="Return to Desktop" selectable="true" name="DesktopButton" class="button" style="align-self: center; top: 0;"/>
+    </ui:VisualElement>
+</ui:UXML>
