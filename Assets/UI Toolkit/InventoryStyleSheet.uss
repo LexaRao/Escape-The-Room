@@ -3,9 +3,9 @@
 
 .button {
     align-self: flex-end;
-    width: 200px;
-    height: 200px;
-    margin-top: 50px;
+    width: 175px;
+    height: 175px;
+    margin-top: 30px;
     margin-right: 50px;
     background-color: rgb(72, 72, 72);
     border-top-left-radius: 20px;
