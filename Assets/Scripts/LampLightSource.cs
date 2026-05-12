@@ -4,15 +4,7 @@ using UnityEngine;
 public class LampLightSource : MonoBehaviour
 {
     [Header("Lamp Position")]
-<<<<<<< HEAD
-<<<<<<< HEAD
-    public float heightAboveGround = 0f;
-=======
     public float heightAboveGround = 3f;
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
-=======
-    public float heightAboveGround = 3f;
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
     public LayerMask groundLayer = ~0;
 
     [Header("Light Settings")]
@@ -29,15 +21,7 @@ public class LampLightSource : MonoBehaviour
     {
         lampLight = GetComponent<Light>();
         SetupLight();
-<<<<<<< HEAD
-<<<<<<< HEAD
-        // SetHeightAboveGround();
-=======
         SetHeightAboveGround();
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
-=======
-        SetHeightAboveGround();
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
     }
 
     void OnValidate()
@@ -47,15 +31,7 @@ public class LampLightSource : MonoBehaviour
         if (lampLight != null)
         {
             SetupLight();
-<<<<<<< HEAD
-<<<<<<< HEAD
-            // SetHeightAboveGround();
-=======
             SetHeightAboveGround();
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
-=======
-            SetHeightAboveGround();
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
         }
     }
 

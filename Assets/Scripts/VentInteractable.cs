@@ -10,30 +10,17 @@ public class VentInteractable : MonoBehaviour
 
     [Header("State")]
     public bool ventClicked = false;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
-=======
-
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
     private float lastClickTime = 0f;
 
     private Renderer objectRenderer;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     [Header("Audio Settings")]
     public AudioSource ventAudioSource;
 
     [Header("Debugging Mode Supported")]
     public bool debuggingMode = false;
 
-=======
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
-=======
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
     void Start()
     {
         if (targetCamera == null)
@@ -42,27 +29,17 @@ public class VentInteractable : MonoBehaviour
         objectRenderer = GetComponentInChildren<Renderer>();
 
         // Load saved state
-<<<<<<< HEAD
-<<<<<<< HEAD
-        if (debuggingMode == true) // If debugging mode is turned on load the game at start state.
+        if (debuggingMode == true)
         {
             PlayerPrefs.SetInt("VentClicked", 0);
             ventClicked = false;
-        } else { // Otherwise, restore the game history.
+        }
+        else
+        {
             if (PlayerPrefs.GetInt("VentClicked", 0) == 1)
             {
                 ventClicked = true;
             }
-=======
-        if (PlayerPrefs.GetInt("VentClicked", 0) == 1)
-        {
-            ventClicked = true;
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
-=======
-        if (PlayerPrefs.GetInt("VentClicked", 0) == 1)
-        {
-            ventClicked = true;
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
         }
     }
 
@@ -123,22 +100,9 @@ public class VentInteractable : MonoBehaviour
 
         Debug.Log("Vent clicked! Player can now exit scene.");
 
-        // Optional: trigger next phase here
-        // Example:
-        // SceneManager.LoadScene("NextScene");
-        // or enable movement script
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-        // Todo: Play back scene of a cracking of a vent and then the noise of a character talking back.  
-        AudioSource ventPlayer = ventAudioSource.GetComponent<AudioSource>();
-        if (ventPlayer != null)
+        if (ventAudioSource != null)
         {
-            ventPlayer.Play(); // Play back the vent shadder noise on click.
+            ventAudioSource.Play();
         }
-=======
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
-=======
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
     }
 }

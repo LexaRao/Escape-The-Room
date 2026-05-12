@@ -29,19 +29,12 @@ public class ChildKeyInputHandler : MonoBehaviour
     [Tooltip("Optional custom beep clip. If not set, a procedural tone is generated.")]
     public AudioClip beepClip;
 
-    private AudioSource audioSource;
-    private Camera mainCamera;
-
-<<<<<<< HEAD
-<<<<<<< HEAD
     [Tooltip("Debugging Mode Supported")]
     public bool debuggingMode = false;
 
-=======
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
-=======
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
-    // Local data storing the keys typed so far.
+    private AudioSource audioSource;
+    private Camera mainCamera;
+
     private string keysTyped = string.Empty;
 
     private GameObject lastClickedChild;
@@ -50,44 +43,19 @@ public class ChildKeyInputHandler : MonoBehaviour
     private float lastInputTime;
     private string lastAddedKey = string.Empty;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    // Created By: Lexa hope.
-    // Note: Destructor used for delete elements of the scene after the scene has expired. 
-    private void sysDestructor()
-    {
-        // Todo: Deconstructor that delete the data before visiting the next scene.
-        PlayerPrefs.SetString("PuzzleControlSystemCode", string.Empty);
-        PlayerPrefs.SetInt("VentClicked", 0);
-        PlayerPrefs.SetInt("FourBlockPuzzle", 0);
-        PlayerPrefs.SetInt("PaintingClue", 0);
-    } 
-
     private void Start()
     {
-        // If the debugging mode is set up call the debugger on program start.
-        if (debuggingMode == true) {
-            // On program start call the system destructor.
-            sysDestructor();
+        if (debuggingMode)
+        {
+            ResetPuzzleState();
         }
 
-        // Create the system to ensure locking works as intended.
         PlayerPrefs.SetString("PuzzleControlSystemCode", string.Empty);
         PlayerPrefs.SetInt("PuzzleControlSystemInitialized", 1);
-=======
-=======
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
-    private void Start()
-    {
-        // Create the system to ensure locking works as intended.
-        PlayerPrefs.SetInt("PuzzleControlSystemInitialized", 0);
-<<<<<<< HEAD
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
-=======
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+        PlayerPrefs.Save();
 
-        // Move on to audio setup.
         EnsureAudioSource();
+
         if (beepClip == null)
         {
             beepClip = CreateBeepClip();
@@ -104,31 +72,29 @@ public class ChildKeyInputHandler : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             ProcessMouseClick();
-<<<<<<< HEAD
-<<<<<<< HEAD
-            SearchForValidSequence();
-        }
-=======
         }
 
         SearchForValidSequence();
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
-=======
-        }
+    }
 
-        SearchForValidSequence();
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+    private void ResetPuzzleState()
+    {
+        PlayerPrefs.SetString("PuzzleControlSystemCode", string.Empty);
+        PlayerPrefs.SetInt("VentClicked", 0);
+        PlayerPrefs.SetInt("FourBlockPuzzle", 0);
+        PlayerPrefs.SetInt("PaintingClue", 0);
+        PlayerPrefs.Save();
     }
 
     private void ProcessMouseClick()
     {
         GameObject clickedObject = GetClickedChildObject();
+
         if (clickedObject == null)
-        {
             return;
-        }
 
         float now = Time.time;
+
         if (clickedObject == lastClickedChild && now - lastClickTime <= doubleClickThreshold)
         {
             PlayBeep();
@@ -147,28 +113,31 @@ public class ChildKeyInputHandler : MonoBehaviour
         if (mainCamera == null)
         {
             mainCamera = Camera.main;
+
             if (mainCamera == null)
-            {
                 return null;
-            }
         }
 
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             Transform hitTransform = hit.transform;
+
             if (hitTransform.IsChildOf(transform))
             {
                 return hitTransform.gameObject;
             }
 
             Transform parent = hitTransform.parent;
+
             while (parent != null)
             {
                 if (parent == transform)
                 {
                     return hitTransform.gameObject;
                 }
+
                 parent = parent.parent;
             }
         }
@@ -179,6 +148,7 @@ public class ChildKeyInputHandler : MonoBehaviour
     private void RegisterSelectedChild(GameObject selected, float now)
     {
         string number = GetNumberFromObject(selected);
+
         if (string.IsNullOrEmpty(number))
         {
             lastSelectedChild = selected;
@@ -200,23 +170,19 @@ public class ChildKeyInputHandler : MonoBehaviour
     private string GetNumberFromObject(GameObject obj)
     {
         string number = ExtractNumberFromName(obj.name);
+
         if (!string.IsNullOrEmpty(number))
-        {
             return number;
-        }
 
         foreach (Transform child in obj.GetComponentsInChildren<Transform>(true))
         {
             if (child == obj.transform)
-            {
                 continue;
-            }
 
             number = ExtractNumberFromName(child.name);
+
             if (!string.IsNullOrEmpty(number))
-            {
                 return number;
-            }
         }
 
         return string.Empty;
@@ -231,11 +197,10 @@ public class ChildKeyInputHandler : MonoBehaviour
     private void EnsureAudioSource()
     {
         if (audioSource != null)
-        {
             return;
-        }
 
         audioSource = GetComponent<AudioSource>();
+
         if (audioSource == null)
         {
             audioSource = gameObject.AddComponent<AudioSource>();
@@ -253,6 +218,7 @@ public class ChildKeyInputHandler : MonoBehaviour
         AudioClip clip = AudioClip.Create("BeepTone", sampleCount, 1, sampleRate, false);
 
         float[] samples = new float[sampleCount];
+
         for (int i = 0; i < sampleCount; i++)
         {
             float sample = Mathf.Sin(2f * Mathf.PI * beepFrequency * i / sampleRate);
@@ -266,6 +232,7 @@ public class ChildKeyInputHandler : MonoBehaviour
     private void PlayBeep()
     {
         EnsureAudioSource();
+
         if (beepClip == null)
         {
             beepClip = CreateBeepClip();
@@ -277,77 +244,30 @@ public class ChildKeyInputHandler : MonoBehaviour
     private void SearchForValidSequence()
     {
         if (string.IsNullOrEmpty(keysTyped) || validKeySequences == null || validKeySequences.Length == 0)
-        {
             return;
-        }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
         bool hasValidPrefix = false;
 
-=======
-        string priorCodeString = "";
-
-        bool validPrefix = false;
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
-=======
-        string priorCodeString = "";
-
-        bool validPrefix = false;
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
         foreach (string sequence in validKeySequences)
         {
             if (string.IsNullOrEmpty(sequence))
-            {
                 continue;
-            }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-            // Exact match → update stored code and load scene.
             if (sequence == keysTyped)
             {
                 UpdateStoredCode(keysTyped);
                 keysTyped = string.Empty;
 
-                // If the key is in the correct range of older keys load the scene.
-                string localPriorCodeString = PlayerPrefs.GetString("PuzzleControlSystemCode", string.Empty);
-                string[] localPriorCodeSequence = localPriorCodeString.Split(',');
-
-                // Print to console for debugging the prior code and valid sequences.
-                Debug.Log($"Search Results - Prior code: {localPriorCodeString}, Valid sequences: {string.Join("", validKeySequences)}");
-
-                // Todo: Accomplish all required updates before loading the scene to ensure the new scene can read the updated code.
-                int ventOpened = PlayerPrefs.GetInt("VentClicked", 0);
-                int paintingSolved = PlayerPrefs.GetInt("PaintingClue", 0);
-                int puzzleSolved = PlayerPrefs.GetInt("FourBlockPuzzle", 0);
-
-                // If the vent is opened, the painting clue, and, four block puzzle have been solved it is ok to load the next scene.
-                bool priorLevelCompleted = false;
-                if (ventOpened == 1 && paintingSolved == 1 && puzzleSolved == 1)
-                {
-                    priorLevelCompleted = true;
-                }
-
-                // Load the correct scene as a direct result.
-                if (localPriorCodeString.Equals(string.Join("", validKeySequences)) && priorLevelCompleted)
-                {
-                    // Call destroyer before next scene.
-                    sysDestructor();
-
-                    // Go to next scene.
-                    SceneManager.LoadScene(newScene);
-                }
+                TryLoadNextScene();
+                return;
             }
 
-            // Still a valid prefix of some sequence → keep accepting input.
             if (sequence.StartsWith(keysTyped))
             {
                 hasValidPrefix = true;
             }
         }
 
-        // If no valid sequence starts with what we have, reset the buffer.
         if (!hasValidPrefix)
         {
             keysTyped = string.Empty;
@@ -358,64 +278,51 @@ public class ChildKeyInputHandler : MonoBehaviour
     {
         string priorCodeString = PlayerPrefs.GetString("PuzzleControlSystemCode", string.Empty);
 
-        // Append new keys to the rolling code.
         priorCodeString += newKeys;
 
-        // Print to console for debugging the key and prior code.
-        Debug.Log($"New keys: {newKeys}, Prior code: {priorCodeString}, Valid sequences: {string.Join("", validKeySequences)}");
+        int maxStoredLength = GetCombinedValidSequenceLength();
 
-        // Limit stored length to the longest valid sequence.
-        int maxLen = newKeys.Length;
-
-        // Get the valid key in the system.
-        if (maxLen > 0 && priorCodeString.Length > maxLen && priorCodeString.Length > 4)
+        if (maxStoredLength > 0 && priorCodeString.Length > maxStoredLength)
         {
-            priorCodeString = priorCodeString.Substring(maxLen);
+            priorCodeString = priorCodeString.Substring(priorCodeString.Length - maxStoredLength);
         }
 
-        // Save the current code string back to PlayerPrefs for the next scene to read.
         PlayerPrefs.SetString("PuzzleControlSystemCode", priorCodeString);
-=======
-=======
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
-            // Get the prior code before changing it state.
-            int priorCodeValue = PlayerPrefs.GetInt("PuzzleControlSystemCode");
+        PlayerPrefs.Save();
 
-            // Set the new value for the code.
-            priorCodeString = priorCodeValue.ToString(); // Convert code to string with leading zeros.
+        Debug.Log($"New keys: {newKeys}, Stored code: {priorCodeString}, Required code: {GetRequiredCode()}");
+    }
 
-            // Todo: Please let the correct key only in the correct required order.
-            if (sequence == keysTyped && (priorCodeString[priorCodeString.Length - 1].CompareTo(keysTyped) == 0))
-            {}
-                // If the value at the current position is in the right range remove it.
-                if (priorCodeString.Length >= validKeySequences.Length)
-                {
-                    priorCodeString = priorCodeString.Substring(1); // Remove the first character to make room for the new key.
-                }
-               
-                
-                priorCodeString += keysTyped; // Append the typed keys to the prior code value.
-               
-                PlayerPrefs.SetInt("PuzzleControlSystemCode", int.Parse(priorCodeString)); // Save the new code value.
-                validPrefix = true;
-            }
+    private void TryLoadNextScene()
+    {
+        string storedCode = PlayerPrefs.GetString("PuzzleControlSystemCode", string.Empty);
+        string requiredCode = GetRequiredCode();
 
-            // Create a key based on each valid index.
-            string[] allValidKeys = new string[validKeySequences.Length];
-            for (int i = 0; i < validKeySequences.Length; i++)
-            {
-                allValidKeys[i] = validKeySequences[i];
-            }
+        int ventOpened = PlayerPrefs.GetInt("VentClicked", 0);
+        int paintingSolved = PlayerPrefs.GetInt("PaintingClue", 0);
+        int puzzleSolved = PlayerPrefs.GetInt("FourBlockPuzzle", 0);
 
-            // If it is you may enter the new scene.
-            if (validKeySequences.ToString().CompareTo(priorCodeString) == 0)
-            {
-                SceneManager.LoadScene(newScene);
-            }
+        bool priorLevelCompleted = ventOpened == 1 && paintingSolved == 1 && puzzleSolved == 1;
 
-<<<<<<< HEAD
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
-=======
->>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+        Debug.Log($"Stored code: {storedCode}, Required code: {requiredCode}, Prior level completed: {priorLevelCompleted}");
+
+        if (storedCode == requiredCode && priorLevelCompleted)
+        {
+            ResetPuzzleState();
+            SceneManager.LoadScene(newScene);
+        }
+    }
+
+    private string GetRequiredCode()
+    {
+        if (validKeySequences == null || validKeySequences.Length == 0)
+            return string.Empty;
+
+        return string.Join("", validKeySequences);
+    }
+
+    private int GetCombinedValidSequenceLength()
+    {
+        return GetRequiredCode().Length;
     }
 }
