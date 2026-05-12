@@ -15,7 +15,10 @@ public class FourBlockPuzzleController : MonoBehaviour
     public bool useObjectDiameterInstead = false;
     public float objectDiameter = 1f;
 <<<<<<< HEAD
+<<<<<<< HEAD
     public bool moveInLocalSpace = true; // move relative to parent/local axes
+=======
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
 =======
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
 
@@ -33,6 +36,7 @@ public class FourBlockPuzzleController : MonoBehaviour
     private Vector3[] startingPositions;
     private bool[] blockLocked;
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     // Dragging state
     private int draggingIndex = -1;
@@ -85,10 +89,15 @@ public class FourBlockPuzzleController : MonoBehaviour
 
         if (blocks == null) blocks = new Transform[0];
 =======
+=======
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
     void Start()
     {
         mainCamera = Camera.main;
 
+<<<<<<< HEAD
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
         startingPositions = new Vector3[blocks.Length];
         blockLocked = new bool[blocks.Length];
@@ -97,6 +106,7 @@ public class FourBlockPuzzleController : MonoBehaviour
         {
             if (blocks[i] != null)
             {
+<<<<<<< HEAD
 <<<<<<< HEAD
                 startingPositions[i] = blocks[i].parent != null ? blocks[i].localPosition : blocks[i].position;
             }
@@ -117,6 +127,11 @@ public class FourBlockPuzzleController : MonoBehaviour
             }
         }
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
+                startingPositions[i] = blocks[i].position;
+            }
+        }
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
     }
 
     void Update()
@@ -124,6 +139,7 @@ public class FourBlockPuzzleController : MonoBehaviour
         if (puzzleComplete)
             return;
 
+<<<<<<< HEAD
 <<<<<<< HEAD
         if (mainCamera == null)
             mainCamera = Camera.main;
@@ -149,11 +165,17 @@ public class FourBlockPuzzleController : MonoBehaviour
         {
             TryClickBlock();
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
+        if (Input.GetMouseButtonDown(0))
+        {
+            TryClickBlock();
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
         }
 
         CheckPuzzleCompletion();
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     private void TryBeginDrag()
     {
@@ -261,6 +283,10 @@ public class FourBlockPuzzleController : MonoBehaviour
     private void TryClickBlock()
     {
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
+    private void TryClickBlock()
+    {
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out RaycastHit hit))
@@ -271,7 +297,11 @@ public class FourBlockPuzzleController : MonoBehaviour
                     continue;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
                 if (hit.transform == blocks[i] || hit.transform.IsChildOf(blocks[i]))
+=======
+                if (hit.transform == blocks[i])
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
 =======
                 if (hit.transform == blocks[i])
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
@@ -284,6 +314,7 @@ public class FourBlockPuzzleController : MonoBehaviour
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public void MoveBlock(int index)
     {
         if (index < 0 || index >= blocks.Length) return;
@@ -292,12 +323,17 @@ public class FourBlockPuzzleController : MonoBehaviour
 
         Vector3 moveAmount;
 =======
+=======
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
     private void MoveBlock(int index)
     {
         Transform block = blocks[index];
 
         Vector3 moveAmount;
 
+<<<<<<< HEAD
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
         if (useObjectDiameterInstead)
         {
@@ -308,6 +344,7 @@ public class FourBlockPuzzleController : MonoBehaviour
             moveAmount = new Vector3(moveWidth, 0f, moveLength);
         }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
         if (moveInLocalSpace && block.parent != null)
         {
@@ -331,6 +368,8 @@ public class FourBlockPuzzleController : MonoBehaviour
                     block.position = targetPositions[index].position;
                 }
 =======
+=======
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
         block.position += moveAmount;
 
         if (IsBlockAtCorrectTarget(index))
@@ -338,6 +377,9 @@ public class FourBlockPuzzleController : MonoBehaviour
             if (snapToTargetWhenCorrect)
             {
                 block.position = targetPositions[index].position;
+<<<<<<< HEAD
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
             }
 
@@ -347,6 +389,7 @@ public class FourBlockPuzzleController : MonoBehaviour
 
     private bool IsBlockAtCorrectTarget(int index)
     {
+<<<<<<< HEAD
 <<<<<<< HEAD
         if (index < 0 || index >= blocks.Length) return false;
         if (blocks[index] == null) return false;
@@ -363,6 +406,8 @@ public class FourBlockPuzzleController : MonoBehaviour
             distance = Vector3.Distance(blocks[index].position, targetPositions[index].position);
         }
 =======
+=======
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
         if (blocks[index] == null || targetPositions[index] == null)
             return false;
 
@@ -370,6 +415,9 @@ public class FourBlockPuzzleController : MonoBehaviour
             blocks[index].position,
             targetPositions[index].position
         );
+<<<<<<< HEAD
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
 
         return distance <= snapDistance;
@@ -383,6 +431,7 @@ public class FourBlockPuzzleController : MonoBehaviour
                 return;
         }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
         // Todo: Maje sure that all other obsticals have been complete.
         int stateObstical1 = PlayerPrefs.GetInt("VentClicked", 0);
@@ -403,10 +452,15 @@ public class FourBlockPuzzleController : MonoBehaviour
             Debug.Log("Puzzle Complete! Moving to next phase.");
         }
 =======
+=======
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
         puzzleComplete = true;
         onPuzzleComplete.Invoke();
 
         Debug.Log("Puzzle Complete! Moving to next phase.");
+<<<<<<< HEAD
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
     }
 }

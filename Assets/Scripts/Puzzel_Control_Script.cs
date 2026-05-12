@@ -33,9 +33,12 @@ public class ChildKeyInputHandler : MonoBehaviour
     private Camera mainCamera;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     [Tooltip("Debugging Mode Supported")]
     public bool debuggingMode = false;
 
+=======
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
 =======
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
     // Local data storing the keys typed so far.
@@ -47,6 +50,7 @@ public class ChildKeyInputHandler : MonoBehaviour
     private float lastInputTime;
     private string lastAddedKey = string.Empty;
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     // Created By: Lexa hope.
     // Note: Destructor used for delete elements of the scene after the scene has expired. 
@@ -71,10 +75,15 @@ public class ChildKeyInputHandler : MonoBehaviour
         PlayerPrefs.SetString("PuzzleControlSystemCode", string.Empty);
         PlayerPrefs.SetInt("PuzzleControlSystemInitialized", 1);
 =======
+=======
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
     private void Start()
     {
         // Create the system to ensure locking works as intended.
         PlayerPrefs.SetInt("PuzzleControlSystemInitialized", 0);
+<<<<<<< HEAD
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
 
         // Move on to audio setup.
@@ -96,8 +105,14 @@ public class ChildKeyInputHandler : MonoBehaviour
         {
             ProcessMouseClick();
 <<<<<<< HEAD
+<<<<<<< HEAD
             SearchForValidSequence();
         }
+=======
+        }
+
+        SearchForValidSequence();
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
 =======
         }
 
@@ -267,8 +282,14 @@ public class ChildKeyInputHandler : MonoBehaviour
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         bool hasValidPrefix = false;
 
+=======
+        string priorCodeString = "";
+
+        bool validPrefix = false;
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
 =======
         string priorCodeString = "";
 
@@ -281,6 +302,7 @@ public class ChildKeyInputHandler : MonoBehaviour
                 continue;
             }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
             // Exact match → update stored code and load scene.
             if (sequence == keysTyped)
@@ -354,6 +376,8 @@ public class ChildKeyInputHandler : MonoBehaviour
         // Save the current code string back to PlayerPrefs for the next scene to read.
         PlayerPrefs.SetString("PuzzleControlSystemCode", priorCodeString);
 =======
+=======
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
             // Get the prior code before changing it state.
             int priorCodeValue = PlayerPrefs.GetInt("PuzzleControlSystemCode");
 
@@ -389,6 +413,9 @@ public class ChildKeyInputHandler : MonoBehaviour
                 SceneManager.LoadScene(newScene);
             }
 
+<<<<<<< HEAD
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
     }
 }

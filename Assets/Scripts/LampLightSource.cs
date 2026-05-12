@@ -5,7 +5,11 @@ public class LampLightSource : MonoBehaviour
 {
     [Header("Lamp Position")]
 <<<<<<< HEAD
+<<<<<<< HEAD
     public float heightAboveGround = 0f;
+=======
+    public float heightAboveGround = 3f;
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
 =======
     public float heightAboveGround = 3f;
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
@@ -26,7 +30,11 @@ public class LampLightSource : MonoBehaviour
         lampLight = GetComponent<Light>();
         SetupLight();
 <<<<<<< HEAD
+<<<<<<< HEAD
         // SetHeightAboveGround();
+=======
+        SetHeightAboveGround();
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
 =======
         SetHeightAboveGround();
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
@@ -40,7 +48,11 @@ public class LampLightSource : MonoBehaviour
         {
             SetupLight();
 <<<<<<< HEAD
+<<<<<<< HEAD
             // SetHeightAboveGround();
+=======
+            SetHeightAboveGround();
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
 =======
             SetHeightAboveGround();
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea

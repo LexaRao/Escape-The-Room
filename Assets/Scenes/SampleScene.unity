@@ -359,6 +359,7 @@ Transform:
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!1 &612413814
 GameObject:
   m_ObjectHideFlags: 0
@@ -685,6 +686,9 @@ MonoBehaviour:
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
 --- !u!1001 &1902479940
+=======
+--- !u!1001 &1006472155
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
 =======
 --- !u!1001 &1006472155
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea

@@ -18,6 +18,7 @@ public class PaintingAudioClue : MonoBehaviour
     private bool hasPlayed = false;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     [Header("Debugging Mode Supported")]
     public bool debuggingMode = false;
 
@@ -35,6 +36,10 @@ public class PaintingAudioClue : MonoBehaviour
             sysDestructor(); // Call the system destructor for internal data.
         }
 
+=======
+    void Start()
+    {
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
 =======
     void Start()
     {
@@ -89,6 +94,7 @@ public class PaintingAudioClue : MonoBehaviour
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         // Play the image right now.
         bool playNow = false;
 
@@ -113,6 +119,8 @@ public class PaintingAudioClue : MonoBehaviour
             PlayerPrefs.SetInt("PaintingClue", 1); // Make sure that the internal data is set so it will not play again.
         }
 =======
+=======
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
         audioSource.Stop();
         audioSource.clip = clueAudio;
         audioSource.Play();
@@ -120,6 +128,9 @@ public class PaintingAudioClue : MonoBehaviour
         hasPlayed = true;
 
         Debug.Log("Double-click detected: clue audio played.");
+<<<<<<< HEAD
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
     }
 }
