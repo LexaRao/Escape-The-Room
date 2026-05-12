@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "InputSystem_Actions",
     "maps": [
         {
@@ -986,6 +987,94 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "TrackedDeviceOrientation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Game",
+            "id": "637bf114-65f9-4cc4-ac99-c02d8970bd28",
+            "actions": [
+                {
+                    "name": "clickAndDrag",
+                    "type": "Button",
+                    "id": "c5477bd9-144c-4512-a7d3-1d287310c40e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "mouseDelta",
+                    "type": "Button",
+                    "id": "c76c82a9-99b1-4e4c-9d92-0ecfba1cba4c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "doubleClick",
+                    "type": "Button",
+                    "id": "21032cf6-c7ce-48e3-9d57-d609122b5508",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "MultiTap(tapTime=0.15)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "mousPos",
+                    "type": "Value",
+                    "id": "003ce5bb-d61b-4047-ac79-1b71e2f31634",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "56dd2ca4-ed72-4a65-a7d8-ae495e1b6182",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "clickAndDrag",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8b7c3d5a-87d9-47cc-932f-e5b1e0a1b864",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "mouseDelta",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c312f6ae-c91e-430a-82eb-5ccae1bea4c7",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "doubleClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d384cec0-6a6c-4292-9d6a-f4eadd303df0",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "mousPos",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
