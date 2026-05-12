@@ -1,8 +1,0 @@
-<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI%20Toolkit/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=6398cd8b9bff083498f4416c113db46e&amp;type=3#MainMenuStyle"/>
-    <ui:VisualElement name="Container" style="flex-grow: 1; border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; width: 1920px; height: 1080px; background-image: url(&quot;project://database/Assets/ImportedAssets/StartingScreen.jpg?fileID=2800000&amp;guid=10cd037fb0ed2084ba616cf961caed81&amp;type=3#StartingScreen&quot;);">
-        <ui:Label text="Cubic Conundrums" name="Header" enable-rich-text="false" class="header" style="font-size: 100px; -unity-text-align: upper-center; margin-top: 350px; -unity-font-style: bold; color: rgb(1, 4, 5);"/>
-        <ui:Button text="Start" name="StartGameButton" class="button" style="align-self: center; top: 0;"/>
-        <ui:Button text="Return to Desktop" selectable="false" name="DesktopButton" focusable="false" class="button" style="align-self: center; top: 0;"/>
-    </ui:VisualElement>
-</ui:UXML>
