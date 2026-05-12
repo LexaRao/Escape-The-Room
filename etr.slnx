@@ -1,0 +1,6 @@
+﻿<Solution>
+  <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="404-gen-unity-plugin.csproj" />
+  <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="GaussianSplatting.csproj" />
+</Solution>
