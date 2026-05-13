@@ -18,6 +18,9 @@ public class CameraNode : MonoBehaviour
 
     public List<CamConnections> connections;
 
+    [Header("Puzzles at this node")]
+    public List<PuzzleObj> puzzlesAtNode;
+
     public Collider GetClickLocationCollider() { return GetComponent<Collider>(); }
 
     void OnDrawGizmos()
