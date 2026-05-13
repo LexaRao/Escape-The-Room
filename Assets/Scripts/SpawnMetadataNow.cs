@@ -1,7 +1,5 @@
 using UnityEngine;
 
-using UnityEngine;
-
 public class SpawnMetadataNow : MonoBehaviour
 {
     public string spawnedByScript;
