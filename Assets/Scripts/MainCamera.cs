@@ -1,5 +1,5 @@
 /*
- * Purpose: Handles camera movement
+ * Purpose: Handles camera movement. Needs lots of commenting
  */
 
 using UnityEngine;
@@ -47,25 +47,41 @@ public class MainCamera : MonoBehaviour
     {
         Idle,
         Dragging,
-        Moving
+        Moving,
+        PuzzleMoving,
+        ViewingPuzzle
     }
 
+    // Enumerator "helper" variable
     private CameraState state = CameraState.Idle;
 
-    // New variables 4/25
     private Vector3 startMovePos; // just gonna be camSpot
     private Quaternion startMoveRot; // Gonna be the rotation of the cammera
 
     private Vector3 endMovePos;
     private Quaternion endMoveRot;
 
+    // Progress trackers
     private float elapsedTime = 0f;
     private float progress = 0f;
 
+    // Camera node handling variables
     private CameraNode targetNode;
-
     private CameraNode.CamConnections foundConnection = default;
     bool isConnected = false;
+
+    // Puzzle object handling variables
+    private PuzzleObj currentPuzzle;
+    [SerializeField] private GameObject puzzleBackButton;
+    private bool returningFromPuzzle = false;
+
+    // Stores all puzzle object scripts in a scene
+    private PuzzleObj[] allPuzzles;
+
+    private Vector3 puzzleStartPos;
+    private Quaternion puzzleStartRot;
+    private Vector3 puzzleEndPos;
+    private Quaternion puzzleEndRot;
 
     private void Awake()
     {
@@ -93,11 +109,13 @@ public class MainCamera : MonoBehaviour
 
     private void Start()
     {
+        // If a starting location was not assigned
         if (camSpot == null)
         {
             Debug.LogError("Camera spot is not assigned.");
             return;
         }
+
         if (isConnected && foundConnection.moveDuration <= 0f)
         {
             Debug.LogError("Invalid Move Duration value. Must be greater than 0.");
@@ -109,6 +127,13 @@ public class MainCamera : MonoBehaviour
         {
             currentNodeCollider.enabled = false;
         }
+
+        // Find and store all PuzzleObj scripts
+        allPuzzles = FindObjectsByType<PuzzleObj>(FindObjectsSortMode.None);
+
+        // Make sure the back button isn't showing and define any puzzles available from the starting node as accessible
+        puzzleBackButton.SetActive(false);
+        SetNodePuzzleAccess(camNode);
 
         // Set initial camera rotation and momentum
         yaw = camSpot.rotation.eulerAngles.y;
@@ -133,7 +158,7 @@ public class MainCamera : MonoBehaviour
                 float smoothRotT = Mathf.SmoothStep(0f, 1f, rotT);
                 mainCam.transform.rotation = Quaternion.Slerp(startMoveRot, endMoveRot, smoothRotT);
             }
-            
+
             progress = elapsedTime / foundConnection.moveDuration;
             if (progress >= 1f)
             {
@@ -149,6 +174,8 @@ public class MainCamera : MonoBehaviour
 
                 camSpot = camNode.transform;
 
+                SetNodePuzzleAccess(camNode);
+
                 elapsedTime = 0;
 
                 Cursor.visible = true;
@@ -158,6 +185,52 @@ public class MainCamera : MonoBehaviour
 
                 state = CameraState.Idle;
             }
+            return;
+        }
+        if (state == CameraState.PuzzleMoving)
+        {
+            elapsedTime += Time.deltaTime;
+
+            float t = Mathf.Clamp01(elapsedTime / currentPuzzle.moveDuration);
+            float smoothT = Mathf.SmoothStep(0f, 1f, t);
+
+            if (currentPuzzle.viewMode == PuzzleViewMode.BringPuzzleToCamera)
+            {
+                currentPuzzle.transform.position = Vector3.Lerp(puzzleStartPos, puzzleEndPos, smoothT);
+                currentPuzzle.transform.rotation = Quaternion.Slerp(puzzleStartRot, puzzleEndRot, smoothT);
+            }
+            else
+            {
+                mainCam.transform.position = Vector3.Lerp(startMovePos, endMovePos, smoothT);
+                mainCam.transform.rotation = Quaternion.Slerp(startMoveRot, endMoveRot, smoothT);
+            }
+
+            if (t >= 1f)
+            {
+                elapsedTime = 0f;
+
+                if (!returningFromPuzzle)
+                {
+                    currentPuzzle.ActivatePuzzle();
+                    puzzleBackButton.SetActive(true);
+                    state = CameraState.ViewingPuzzle;
+                }
+                else
+                {
+                    returningFromPuzzle = false;
+                    currentPuzzle = null;
+
+                    ResetCameraInputState();
+                    SetNodePuzzleAccess(camNode);
+                    state = CameraState.Idle;
+                }
+            }
+
+            return;
+        }
+        if (state == CameraState.ViewingPuzzle)
+        {
+            puzzleBackButton.SetActive(true);
             return;
         }
 
@@ -230,16 +303,36 @@ public class MainCamera : MonoBehaviour
      */
     public void DoubleClicked(InputAction.CallbackContext context)
     {
+        if (state != CameraState.Idle)
+        {
+            return;
+        }
+
         // Shoots out a ray from the camera through the mouse point
-        LayerMask mask = LayerMask.GetMask("CameraNode");
-        Ray ray = mainCam.ScreenPointToRay(mousePosIA.ReadValue<Vector2>());
+        LayerMask camMask = LayerMask.GetMask("CameraNode");
+        LayerMask puzzleMask = LayerMask.GetMask("PuzzleObj");
+
+        Ray ray = mainCam.ScreenPointToRay(GetMouseScreenPosition()/*mousePosIA.ReadValue<Vector2>()*/);
         RaycastHit hit;
 
         Debug.DrawLine(ray.origin, ray.origin + ray.direction * 100f, Color.red, 1f);
 
         // If a collider in the "CameraNode" layer is hit, re-enable the current camera's collider, and move the camera to the saved hit collider
-        if (!Physics.Raycast(ray, out hit, 1000f, mask)) return;
-        
+        if (Physics.Raycast(ray, out hit, 1000f, puzzleMask))
+        {
+            PuzzleObj puzzle = hit.collider.GetComponentInParent<PuzzleObj>();
+
+            if (puzzle == null)
+            {
+                Debug.LogError("Clicked puzzle object doesn't have a PuzzleObj script.");
+                return;
+            }
+
+            PuzzleClickedOn(puzzle);
+            return;
+        }
+        if (!Physics.Raycast(ray, out hit, 1000f, camMask)) return;
+
         Collider hitCollider = hit.collider;
         Debug.Log("Hit: " + hitCollider.name);
 
@@ -289,12 +382,14 @@ public class MainCamera : MonoBehaviour
     {
         state = CameraState.Moving;
 
+        SetNodePuzzleAccess(null);
+
         momentum = Vector2.zero;
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = false;
 
-        startMovePos = camSpot.position;
+        startMovePos = mainCam.transform.position;
         startMoveRot = mainCam.transform.rotation;
 
         endMovePos = targetNode.getPosition();
@@ -314,8 +409,117 @@ public class MainCamera : MonoBehaviour
      */
     void RotateCamera(Quaternion rotation)
     {
-        transform.position = camSpot.position;
-        transform.rotation = rotation;
+        mainCam.transform.position = camSpot.position;
+        mainCam.transform.rotation = rotation;
+    }
+
+    void PuzzleClickedOn(PuzzleObj p)
+    {
+        Debug.Log("Puzzle was double clicked on and is now moving to view");
+
+        if (state == CameraState.ViewingPuzzle || state == CameraState.PuzzleMoving)
+            return;
+
+        currentPuzzle = p;
+        SetNodePuzzleAccess(null);
+        momentum = Vector2.zero;
+
+        returningFromPuzzle = false;
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        if (p.viewMode == PuzzleViewMode.MoveCameraToPuzzle)
+        {
+            state = CameraState.PuzzleMoving;
+
+            startMovePos = mainCam.transform.position;
+            startMoveRot = mainCam.transform.rotation;
+
+            endMovePos = p.puzzleViewSpot.position;
+            endMoveRot = p.puzzleViewSpot.rotation;
+
+            elapsedTime = 0f;
+        }
+        else if (p.viewMode == PuzzleViewMode.BringPuzzleToCamera)
+        {
+            p.SaveOriginalTransform();
+
+            currentPuzzle = p;
+            SetNodePuzzleAccess(null);
+            momentum = Vector2.zero;
+
+            returningFromPuzzle = false;
+            state = CameraState.PuzzleMoving;
+
+            puzzleStartPos = p.transform.position;
+            puzzleStartRot = p.transform.rotation;
+
+            puzzleEndPos =
+                mainCam.transform.position +
+                mainCam.transform.forward * p.pickupDistanceFromCamera +
+                mainCam.transform.up * p.pickupVerticalOffset;
+
+            puzzleEndRot = Quaternion.Euler(p.pickupRotation);
+
+            elapsedTime = 0f;
+        }
+    }
+
+    public void ExitPuzzleView()
+    {
+        if (currentPuzzle == null)
+        {
+            return;
+        }
+
+        currentPuzzle.DeactivatePuzzle();
+        puzzleBackButton.SetActive(false);
+
+        ResetCameraInputState();
+
+        if (currentPuzzle.viewMode == PuzzleViewMode.BringPuzzleToCamera)
+        {
+            currentPuzzle.RestoreOriginalTransform();
+            currentPuzzle = null;
+            returningFromPuzzle = false;
+            SetNodePuzzleAccess(camNode);
+            state = CameraState.Idle;
+            return;
+        }
+
+        returningFromPuzzle = true;
+        state = CameraState.PuzzleMoving;
+
+        startMovePos = mainCam.transform.position;
+        startMoveRot = mainCam.transform.rotation;
+
+        endMovePos = camNode.transform.position;
+        endMoveRot = camNode.transform.rotation;
+
+        elapsedTime = 0f;
+    }
+
+    private void SetNodePuzzleAccess(CameraNode node)
+    {
+        foreach (var puzzle in allPuzzles)
+        {
+            bool enable = node != null && node.puzzlesAtNode.Contains(puzzle);
+            puzzle.SetAccessible(enable);
+        }
+    }
+
+    private void ResetCameraInputState()
+    {
+        momentum = Vector2.zero;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        state = CameraState.Idle;
+    }
+
+    private Vector2 GetMouseScreenPosition()
+    {
+        return Mouse.current.position.ReadValue();
     }
 
     void OnDisable()
