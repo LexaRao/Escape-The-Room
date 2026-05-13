@@ -91,6 +91,7 @@ public class PaintingAudioClue : MonoBehaviour
         int ventClicked = PlayerPrefs.GetInt("VentClicked", 0);
         int paintingCluePlayed = PlayerPrefs.GetInt("PaintingClue", 0);
 
+        // Gate: vent must be clicked first, and clue not already played
         if (ventClicked != 1 || paintingCluePlayed == 1)
             return;
 

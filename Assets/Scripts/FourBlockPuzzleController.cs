@@ -26,6 +26,13 @@ public class FourBlockPuzzleController : MonoBehaviour
     [Header("Events")]
     public UnityEvent onPuzzleComplete;
 
+    [Header("Puzzle Audio Source")]
+    public AudioClip puzzleClick;
+    private AudioSource puzzleClickSource;
+
+    [Header("Debugging Mode Supported")]
+    public bool debuggingMode = false;
+
     private Camera mainCamera;
     private Vector3[] startingPositions;
     private bool[] blockLocked;
@@ -34,14 +41,7 @@ public class FourBlockPuzzleController : MonoBehaviour
     private Plane dragPlane;
     private Vector3 dragOffsetWorld;
 
-    [Header("Puzzle Audio Source")]
-    public AudioClip puzzleClick;
-    private AudioSource puzzleClickSource;
-
-    [Header("Debugging Mode Supported")]
-    public bool debuggingMode = false;
-
-    void Start()
+    private void Start()
     {
         if (debuggingMode)
         {
@@ -56,7 +56,13 @@ public class FourBlockPuzzleController : MonoBehaviour
         mainCamera = Camera.main;
 
         if (mainCamera == null)
-            Debug.LogWarning("[FourBlockPuzzleController] No main camera found. Raycasts will fail.");
+            Debug.LogWarning("[FourBlockPuzzleController] No main camera found. Dragging will not work.");
+
+        puzzleClickSource = GetComponent<AudioSource>();
+        if (puzzleClickSource == null)
+            puzzleClickSource = gameObject.AddComponent<AudioSource>();
+
+        puzzleClickSource.playOnAwake = false;
 
         startingPositions = new Vector3[blocks.Length];
         blockLocked = new bool[blocks.Length];
@@ -71,25 +77,10 @@ public class FourBlockPuzzleController : MonoBehaviour
             }
         }
 
-        if (targetPositions == null || targetPositions.Length != blocks.Length)
-        {
-            Transform[] fixedTargets = new Transform[blocks.Length];
-
-            if (targetPositions != null)
-            {
-                for (int i = 0; i < Mathf.Min(fixedTargets.Length, targetPositions.Length); i++)
-                {
-                    fixedTargets[i] = targetPositions[i];
-                }
-            }
-
-            targetPositions = fixedTargets;
-        }
-
-        puzzleClickSource = GetComponent<AudioSource>();
+        EnsureTargetArraySize();
     }
 
-    void Update()
+    private void Update()
     {
         if (puzzleComplete)
             return;
@@ -98,21 +89,31 @@ public class FourBlockPuzzleController : MonoBehaviour
             mainCamera = Camera.main;
 
         if (Input.GetMouseButtonDown(0))
-        {
             TryBeginDrag();
-        }
 
         if (draggingIndex != -1 && Input.GetMouseButton(0))
-        {
             ContinueDrag(draggingIndex);
-        }
 
         if (draggingIndex != -1 && Input.GetMouseButtonUp(0))
-        {
             EndDrag(draggingIndex);
-        }
 
         CheckPuzzleCompletion();
+    }
+
+    private void EnsureTargetArraySize()
+    {
+        if (targetPositions != null && targetPositions.Length == blocks.Length)
+            return;
+
+        Transform[] fixedTargets = new Transform[blocks.Length];
+
+        if (targetPositions != null)
+        {
+            for (int i = 0; i < Mathf.Min(fixedTargets.Length, targetPositions.Length); i++)
+                fixedTargets[i] = targetPositions[i];
+        }
+
+        targetPositions = fixedTargets;
     }
 
     private void TryBeginDrag()
@@ -122,30 +123,30 @@ public class FourBlockPuzzleController : MonoBehaviour
 
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        if (!Physics.Raycast(ray, out RaycastHit hit))
+            return;
+
+        for (int i = 0; i < blocks.Length; i++)
         {
-            for (int i = 0; i < blocks.Length; i++)
+            if (blocks[i] == null || blockLocked[i])
+                continue;
+
+            if (hit.transform == blocks[i] || hit.transform.IsChildOf(blocks[i]))
             {
-                if (blocks[i] == null || blockLocked[i])
-                    continue;
+                draggingIndex = i;
+                dragPlane = new Plane(Vector3.up, blocks[i].position);
 
-                if (hit.transform == blocks[i] || hit.transform.IsChildOf(blocks[i]))
+                if (dragPlane.Raycast(ray, out float enter))
                 {
-                    draggingIndex = i;
-                    dragPlane = new Plane(Vector3.up, blocks[i].position);
-
-                    if (dragPlane.Raycast(ray, out float enter))
-                    {
-                        Vector3 hitPoint = ray.GetPoint(enter);
-                        dragOffsetWorld = blocks[i].position - hitPoint;
-                    }
-                    else
-                    {
-                        dragOffsetWorld = Vector3.zero;
-                    }
-
-                    break;
+                    Vector3 hitPoint = ray.GetPoint(enter);
+                    dragOffsetWorld = blocks[i].position - hitPoint;
                 }
+                else
+                {
+                    dragOffsetWorld = Vector3.zero;
+                }
+
+                break;
             }
         }
     }
@@ -168,13 +169,9 @@ public class FourBlockPuzzleController : MonoBehaviour
             Vector3 desiredWorldPos = hitPoint + dragOffsetWorld;
 
             if (moveInLocalSpace && block.parent != null)
-            {
                 block.localPosition = block.parent.InverseTransformPoint(desiredWorldPos);
-            }
             else
-            {
                 block.position = desiredWorldPos;
-            }
         }
     }
 
@@ -186,9 +183,7 @@ public class FourBlockPuzzleController : MonoBehaviour
             return;
         }
 
-        Transform block = blocks[index];
-
-        if (block == null)
+        if (blocks[index] == null)
         {
             draggingIndex = -1;
             return;
@@ -210,7 +205,7 @@ public class FourBlockPuzzleController : MonoBehaviour
 
         Transform block = blocks[index];
 
-        if (block == null)
+        if (block == null || blockLocked[index])
             return;
 
         Vector3 moveAmount = useObjectDiameterInstead
@@ -218,13 +213,9 @@ public class FourBlockPuzzleController : MonoBehaviour
             : new Vector3(moveWidth, 0f, moveLength);
 
         if (moveInLocalSpace && block.parent != null)
-        {
             block.localPosition += moveAmount;
-        }
         else
-        {
             block.position += moveAmount;
-        }
 
         if (IsBlockAtCorrectTarget(index))
         {
@@ -248,13 +239,9 @@ public class FourBlockPuzzleController : MonoBehaviour
             return;
 
         if (block.parent != null && target.parent == block.parent)
-        {
             block.localPosition = target.localPosition;
-        }
         else
-        {
             block.position = target.position;
-        }
     }
 
     private bool IsBlockAtCorrectTarget(int index)
@@ -272,11 +259,17 @@ public class FourBlockPuzzleController : MonoBehaviour
 
         if (blocks[index].parent != null && targetPositions[index].parent == blocks[index].parent)
         {
-            distance = Vector3.Distance(blocks[index].localPosition, targetPositions[index].localPosition);
+            distance = Vector3.Distance(
+                blocks[index].localPosition,
+                targetPositions[index].localPosition
+            );
         }
         else
         {
-            distance = Vector3.Distance(blocks[index].position, targetPositions[index].position);
+            distance = Vector3.Distance(
+                blocks[index].position,
+                targetPositions[index].position
+            );
         }
 
         return distance <= snapDistance;
@@ -301,9 +294,7 @@ public class FourBlockPuzzleController : MonoBehaviour
             PlayerPrefs.Save();
 
             if (puzzleClickSource != null && puzzleClick != null)
-            {
                 puzzleClickSource.PlayOneShot(puzzleClick);
-            }
 
             onPuzzleComplete?.Invoke();
 

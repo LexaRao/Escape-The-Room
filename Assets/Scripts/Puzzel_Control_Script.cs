@@ -43,6 +43,11 @@ public class ChildKeyInputHandler : MonoBehaviour
     private float lastInputTime;
     private string lastAddedKey = string.Empty;
 
+    private void Awake()
+    {
+        mainCamera = Camera.main;
+    }
+
     private void Start()
     {
         if (debuggingMode)
@@ -60,11 +65,6 @@ public class ChildKeyInputHandler : MonoBehaviour
         {
             beepClip = CreateBeepClip();
         }
-    }
-
-    private void Awake()
-    {
-        mainCamera = Camera.main;
     }
 
     private void Update()
@@ -125,18 +125,14 @@ public class ChildKeyInputHandler : MonoBehaviour
             Transform hitTransform = hit.transform;
 
             if (hitTransform.IsChildOf(transform))
-            {
                 return hitTransform.gameObject;
-            }
 
             Transform parent = hitTransform.parent;
 
             while (parent != null)
             {
                 if (parent == transform)
-                {
                     return hitTransform.gameObject;
-                }
 
                 parent = parent.parent;
             }
@@ -165,6 +161,8 @@ public class ChildKeyInputHandler : MonoBehaviour
         lastInputTime = now;
         lastAddedKey = number;
         lastSelectedChild = selected;
+
+        Debug.Log($"Keys typed: {keysTyped}");
     }
 
     private string GetNumberFromObject(GameObject obj)
@@ -202,9 +200,7 @@ public class ChildKeyInputHandler : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
 
         if (audioSource == null)
-        {
             audioSource = gameObject.AddComponent<AudioSource>();
-        }
 
         audioSource.playOnAwake = false;
         audioSource.spatialBlend = 0f;
@@ -215,8 +211,8 @@ public class ChildKeyInputHandler : MonoBehaviour
     {
         int sampleRate = AudioSettings.outputSampleRate;
         int sampleCount = Mathf.CeilToInt(beepDuration * sampleRate);
-        AudioClip clip = AudioClip.Create("BeepTone", sampleCount, 1, sampleRate, false);
 
+        AudioClip clip = AudioClip.Create("BeepTone", sampleCount, 1, sampleRate, false);
         float[] samples = new float[sampleCount];
 
         for (int i = 0; i < sampleCount; i++)
@@ -234,9 +230,7 @@ public class ChildKeyInputHandler : MonoBehaviour
         EnsureAudioSource();
 
         if (beepClip == null)
-        {
             beepClip = CreateBeepClip();
-        }
 
         audioSource.PlayOneShot(beepClip, beepVolume);
     }
@@ -270,6 +264,7 @@ public class ChildKeyInputHandler : MonoBehaviour
 
         if (!hasValidPrefix)
         {
+            Debug.Log($"Invalid key sequence: {keysTyped}");
             keysTyped = string.Empty;
         }
     }
@@ -277,7 +272,6 @@ public class ChildKeyInputHandler : MonoBehaviour
     private void UpdateStoredCode(string newKeys)
     {
         string priorCodeString = PlayerPrefs.GetString("PuzzleControlSystemCode", string.Empty);
-
         priorCodeString += newKeys;
 
         int maxStoredLength = GetCombinedValidSequenceLength();
@@ -302,7 +296,10 @@ public class ChildKeyInputHandler : MonoBehaviour
         int paintingSolved = PlayerPrefs.GetInt("PaintingClue", 0);
         int puzzleSolved = PlayerPrefs.GetInt("FourBlockPuzzle", 0);
 
-        bool priorLevelCompleted = ventOpened == 1 && paintingSolved == 1 && puzzleSolved == 1;
+        bool priorLevelCompleted =
+            ventOpened == 1 &&
+            paintingSolved == 1 &&
+            puzzleSolved == 1;
 
         Debug.Log($"Stored code: {storedCode}, Required code: {requiredCode}, Prior level completed: {priorLevelCompleted}");
 

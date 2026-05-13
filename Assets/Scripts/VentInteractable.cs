@@ -11,39 +11,35 @@ public class VentInteractable : MonoBehaviour
     [Header("State")]
     public bool ventClicked = false;
 
-    private float lastClickTime = 0f;
-
-    private Renderer objectRenderer;
-
     [Header("Audio Settings")]
     public AudioSource ventAudioSource;
 
     [Header("Debugging Mode Supported")]
     public bool debuggingMode = false;
 
-    void Start()
+    private float lastClickTime = 0f;
+    private Renderer objectRenderer;
+
+    private void Start()
     {
         if (targetCamera == null)
             targetCamera = Camera.main;
 
         objectRenderer = GetComponentInChildren<Renderer>();
 
-        // Load saved state
-        if (debuggingMode == true)
+        if (debuggingMode)
         {
             PlayerPrefs.SetInt("VentClicked", 0);
+            PlayerPrefs.Save();
             ventClicked = false;
         }
         else
         {
-            if (PlayerPrefs.GetInt("VentClicked", 0) == 1)
-            {
-                ventClicked = true;
-            }
+            ventClicked = PlayerPrefs.GetInt("VentClicked", 0) == 1;
         }
     }
 
-    void Update()
+    private void Update()
     {
         if (ventClicked)
             return;
@@ -59,6 +55,12 @@ public class VentInteractable : MonoBehaviour
 
     private bool IsMouseOverObject()
     {
+        if (targetCamera == null)
+            targetCamera = Camera.main;
+
+        if (targetCamera == null)
+            return false;
+
         Ray ray = targetCamera.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out RaycastHit hit))
@@ -71,7 +73,7 @@ public class VentInteractable : MonoBehaviour
 
     private bool IsVisibleToCamera()
     {
-        if (objectRenderer == null)
+        if (targetCamera == null || objectRenderer == null)
             return false;
 
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(targetCamera);
@@ -94,7 +96,6 @@ public class VentInteractable : MonoBehaviour
     {
         ventClicked = true;
 
-        // Save state
         PlayerPrefs.SetInt("VentClicked", 1);
         PlayerPrefs.Save();
 

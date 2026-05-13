@@ -1,0 +1,43 @@
+import numpy as np
+import wave
+import struct
+
+# ============================================
+# Puzzle Click Sound Generator
+# ============================================
+
+sample_rate = 44100
+duration = 0.08  # 80 ms click
+frequency = 1800  # sharp mechanical click tone
+
+samples = int(sample_rate * duration)
+
+# Time array
+t = np.linspace(0, duration, samples, False)
+
+# Base tone (short sine burst)
+tone = np.sin(2 * np.pi * frequency * t)
+
+# Add a bit of noise for texture
+noise = np.random.normal(0, 0.15, samples)
+
+# Combine tone + noise
+sound = tone * 0.6 + noise * 0.4
+
+# Apply exponential decay envelope
+envelope = np.exp(-40 * t)
+sound *= envelope
+
+# Normalize to 16-bit range
+sound = sound / np.max(np.abs(sound))
+sound_int16 = np.int16(sound * 32767)
+
+# Write WAV file
+with wave.open("puzzle_click.wav", "w") as wav_file:
+    wav_file.setnchannels(1)          # mono
+    wav_file.setsampwidth(2)          # 16-bit
+    wav_file.setframerate(sample_rate)
+    for s in sound_int16:
+        wav_file.writeframes(struct.pack('<h', s))
+
+print("Generated puzzle_click.wav")

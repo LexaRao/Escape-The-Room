@@ -1,12 +1,16 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class cameraMovement : MonoBehaviour
+public class CameraMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float moveSpeed = 10f;
     public Vector2 xRange = new Vector2(-20f, 20f);
     public Vector2 zRange = new Vector2(-20f, 20f);
+
+    [Header("Vertical Height Limits")]
+    public float minY = 1f;
+    public float maxY = 10f;
 
     [Header("Rotation Settings")]
     public float mouseSensitivity = 1.5f;
@@ -18,21 +22,26 @@ public class cameraMovement : MonoBehaviour
     private Transform cam;
     private float pitch;
 
-    // Input Actions
     private InputAction moveAction;
     private InputAction lookAction;
     private InputAction keyboardLookAction;
+
+    private CharacterController controller;
 
     void Awake()
     {
         cam = Camera.main.transform;
 
-        // Initialize pitch from current camera rotation
+        controller = GetComponent<CharacterController>();
+        if (controller == null)
+            controller = gameObject.AddComponent<CharacterController>();
+
+        controller.minMoveDistance = 0f;
+
         pitch = cam.localEulerAngles.x;
         if (pitch > 180f) pitch -= 360f;
 
-        // Create Input Actions
-        moveAction = new InputAction("Move", binding: "<Keyboard>/w");
+        moveAction = new InputAction("Move");
         moveAction.AddCompositeBinding("2DVector")
             .With("Up", "<Keyboard>/w")
             .With("Down", "<Keyboard>/s")
@@ -63,44 +72,51 @@ public class cameraMovement : MonoBehaviour
         keyboardLookAction.Disable();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (!IsLeftMousePressed())
+        if (!Input.GetMouseButton(0))
             return;
 
         HandleMovement();
         HandleKeyboardRotation();
         HandleMouseRotation();
-    }
-
-    bool IsLeftMousePressed()
-    {
-        return Input.GetMouseButton(0);
+        ClampVerticalPosition();
     }
 
     void HandleMovement()
     {
         Vector2 input = moveAction.ReadValue<Vector2>();
-        Vector3 move = new Vector3(input.x, 0, input.y) * moveSpeed * Time.deltaTime;
 
-        Vector3 newPos = transform.position + move;
+        Vector3 move = new Vector3(input.x, 0, input.y);
+        move = transform.TransformDirection(move) * moveSpeed * Time.deltaTime;
 
-        newPos.x = Mathf.Clamp(newPos.x, xRange.x, xRange.y);
-        newPos.z = Mathf.Clamp(newPos.z, zRange.x, zRange.y);
+        controller.Move(move);
 
-        transform.position = newPos;
+        Vector3 pos = transform.position;
+        pos.x = Mathf.Clamp(pos.x, xRange.x, xRange.y);
+        pos.z = Mathf.Clamp(pos.z, zRange.x, zRange.y);
+        transform.position = pos;
+    }
+
+    void ClampVerticalPosition()
+    {
+        Vector3 pos = transform.position;
+        pos.y = Mathf.Clamp(pos.y, minY, maxY);
+        transform.position = pos;
     }
 
     void HandleKeyboardRotation()
     {
         Vector2 input = keyboardLookAction.ReadValue<Vector2>();
+
         float yaw = input.x;
         float pitchInput = input.y;
 
         if (invertY) pitchInput = -pitchInput;
 
-        Vector3 rotation = new Vector3(pitchInput, yaw, 0f) * keyboardRotationSpeed * Time.deltaTime;
+        Vector3 rotation = new Vector3(pitchInput, yaw, 0f) *
+                           keyboardRotationSpeed * Time.deltaTime;
+
         cam.Rotate(rotation, Space.Self);
     }
 
@@ -113,10 +129,8 @@ public class cameraMovement : MonoBehaviour
 
         if (invertY) mouseY = -mouseY;
 
-        // Horizontal rotation on parent
         transform.Rotate(Vector3.up * mouseX, Space.World);
 
-        // Vertical rotation on camera
         pitch -= mouseY;
         pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
 
