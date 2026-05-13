@@ -31,7 +31,7 @@ public class MainCamera : MonoBehaviour
     [Header("Camera Node Script")]
     [SerializeField] private CameraNode camNode;
 
-    // Rotational coordinates
+    // Rotational coordinates in euler angles
     private float yaw; // Horizontal movement
     private float pitch; // Vertical movement
 
@@ -52,11 +52,11 @@ public class MainCamera : MonoBehaviour
         ViewingPuzzle
     }
 
-    // Enumerator "helper" variable
     private CameraState state = CameraState.Idle;
 
-    private Vector3 startMovePos; // just gonna be camSpot
-    private Quaternion startMoveRot; // Gonna be the rotation of the cammera
+    // Movement interpolation values
+    private Vector3 startMovePos;
+    private Quaternion startMoveRot;
 
     private Vector3 endMovePos;
     private Quaternion endMoveRot;
@@ -78,6 +78,7 @@ public class MainCamera : MonoBehaviour
     // Stores all puzzle object scripts in a scene
     private PuzzleObj[] allPuzzles;
 
+    // Puzzle interpolation values
     private Vector3 puzzleStartPos;
     private Quaternion puzzleStartRot;
     private Vector3 puzzleEndPos;
@@ -144,21 +145,27 @@ public class MainCamera : MonoBehaviour
 
     void Update()
     {
+        // Movement block
         if (state == CameraState.Moving)
         {
             elapsedTime += Time.deltaTime;
 
+            // Movement interpolation with smoothing
             float t = Mathf.Clamp01(elapsedTime / foundConnection.moveDuration);
             float smoothT = Mathf.SmoothStep(0f, 1f, t);
 
             mainCam.transform.position = Vector3.Lerp(startMovePos, endMovePos, smoothT);
+
+            // Delayed rotation interpolation
             if (elapsedTime >= foundConnection.rotationDelay)
             {
                 float rotT = Mathf.Clamp01((elapsedTime - foundConnection.rotationDelay) / (foundConnection.moveDuration - foundConnection.rotationDelay));
+
                 float smoothRotT = Mathf.SmoothStep(0f, 1f, rotT);
                 mainCam.transform.rotation = Quaternion.Slerp(startMoveRot, endMoveRot, smoothRotT);
             }
 
+            // Finish movement
             progress = elapsedTime / foundConnection.moveDuration;
             if (progress >= 1f)
             {
@@ -167,26 +174,28 @@ public class MainCamera : MonoBehaviour
 
                 momentum = Vector2.zero;
 
+                // Sync rotation values
                 yaw = endMoveRot.eulerAngles.y;
                 pitch = endMoveRot.eulerAngles.x;
 
+                // Update current node
                 camNode = targetNode;
-
                 camSpot = camNode.transform;
 
+                // Make appropriate puzzles accessible
                 SetNodePuzzleAccess(camNode);
 
+                // Reset state
                 elapsedTime = 0;
-
                 Cursor.visible = true;
 
                 foundConnection = default;
                 isConnected = false;
-
                 state = CameraState.Idle;
             }
             return;
         }
+        // Puzzle is moving block
         if (state == CameraState.PuzzleMoving)
         {
             elapsedTime += Time.deltaTime;
@@ -194,6 +203,7 @@ public class MainCamera : MonoBehaviour
             float t = Mathf.Clamp01(elapsedTime / currentPuzzle.moveDuration);
             float smoothT = Mathf.SmoothStep(0f, 1f, t);
 
+            // Move either puzzle or camera depending on what was defined in PuzzleObj
             if (currentPuzzle.viewMode == PuzzleViewMode.BringPuzzleToCamera)
             {
                 currentPuzzle.transform.position = Vector3.Lerp(puzzleStartPos, puzzleEndPos, smoothT);
@@ -205,6 +215,7 @@ public class MainCamera : MonoBehaviour
                 mainCam.transform.rotation = Quaternion.Slerp(startMoveRot, endMoveRot, smoothT);
             }
 
+            // End of puzzle movenent
             if (t >= 1f)
             {
                 elapsedTime = 0f;
@@ -228,12 +239,14 @@ public class MainCamera : MonoBehaviour
 
             return;
         }
+        // Viewing a puzzle block
         if (state == CameraState.ViewingPuzzle)
         {
             puzzleBackButton.SetActive(true);
             return;
         }
 
+        // Generic input handling
         HandleInput();
 
         // Clamp the pitch and yaw so that it can't exceed the limits
@@ -309,15 +322,17 @@ public class MainCamera : MonoBehaviour
         }
 
         // Shoots out a ray from the camera through the mouse point
+        // Differentiates between puzzles and camera nodes through layer masks
         LayerMask camMask = LayerMask.GetMask("CameraNode");
         LayerMask puzzleMask = LayerMask.GetMask("PuzzleObj");
 
-        Ray ray = mainCam.ScreenPointToRay(GetMouseScreenPosition()/*mousePosIA.ReadValue<Vector2>()*/);
+        Ray ray = mainCam.ScreenPointToRay(GetMouseScreenPosition());
         RaycastHit hit;
 
+        // Shoots out a red line in scene view that follows the double-click raycast
         Debug.DrawLine(ray.origin, ray.origin + ray.direction * 100f, Color.red, 1f);
 
-        // If a collider in the "CameraNode" layer is hit, re-enable the current camera's collider, and move the camera to the saved hit collider
+        // Puzzle interaction
         if (Physics.Raycast(ray, out hit, 1000f, puzzleMask))
         {
             PuzzleObj puzzle = hit.collider.GetComponentInParent<PuzzleObj>();
@@ -331,10 +346,13 @@ public class MainCamera : MonoBehaviour
             PuzzleClickedOn(puzzle);
             return;
         }
+
+        // Camera node interaction
+        // If a collider in the "CameraNode" layer is hit, re-enable the current camera's collider, and move the camera to the saved hit collider
         if (!Physics.Raycast(ray, out hit, 1000f, camMask)) return;
 
         Collider hitCollider = hit.collider;
-        Debug.Log("Hit: " + hitCollider.name);
+        // Debug.Log("Hit: " + hitCollider.name);
 
         // Get the collider's CameraNode script.
         targetNode = hitCollider.GetComponent<CameraNode>();
@@ -345,6 +363,7 @@ public class MainCamera : MonoBehaviour
             return;
         }
 
+        // Find connection to target node after resetting
         foundConnection = default;
         isConnected = false;
 
@@ -377,6 +396,7 @@ public class MainCamera : MonoBehaviour
      * Is called when a camera node's collider is double clicked on.
      * Parameter is hit camera node's collider.
      * Move camera's position and rotation to camera Node, and save its collider.
+     * Actual movement is done through Update()
      */
     void MoveCameraToHitNode(Collider hitColl)
     {
@@ -388,6 +408,7 @@ public class MainCamera : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = false;
+
 
         startMovePos = mainCam.transform.position;
         startMoveRot = mainCam.transform.rotation;
@@ -413,10 +434,14 @@ public class MainCamera : MonoBehaviour
         mainCam.transform.rotation = rotation;
     }
 
+    /*
+     * Determines how the system transistions into a puzzle depending on the puzzle's configured viewing mode
+     */
     void PuzzleClickedOn(PuzzleObj p)
     {
-        Debug.Log("Puzzle was double clicked on and is now moving to view");
+        // Debug.Log("Puzzle was double clicked on and is now moving to view");
 
+        // Check for conflicts
         if (state == CameraState.ViewingPuzzle || state == CameraState.PuzzleMoving)
             return;
 
@@ -426,9 +451,12 @@ public class MainCamera : MonoBehaviour
 
         returningFromPuzzle = false;
 
+        // Ensure cursor is usable for puzzle interaction
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
+        // Move camera to puzzle block
+        // Actual movement is done through Update()
         if (p.viewMode == PuzzleViewMode.MoveCameraToPuzzle)
         {
             state = CameraState.PuzzleMoving;
@@ -441,8 +469,11 @@ public class MainCamera : MonoBehaviour
 
             elapsedTime = 0f;
         }
+        // Puzzle moves to camera block
+        // Actual movement is done through Update()
         else if (p.viewMode == PuzzleViewMode.BringPuzzleToCamera)
         {
+            // Save original transform so it can be restored later
             p.SaveOriginalTransform();
 
             currentPuzzle = p;
@@ -460,12 +491,16 @@ public class MainCamera : MonoBehaviour
                 mainCam.transform.forward * p.pickupDistanceFromCamera +
                 mainCam.transform.up * p.pickupVerticalOffset;
 
+            // Apply a predefined rotation for puzzle viewing (admittedly, not the best implementation... oops)
             puzzleEndRot = Quaternion.Euler(p.pickupRotation);
 
             elapsedTime = 0f;
         }
     }
 
+    /*
+     * Exit puzzle view and return to normal camera state
+     */
     public void ExitPuzzleView()
     {
         if (currentPuzzle == null)
@@ -473,21 +508,27 @@ public class MainCamera : MonoBehaviour
             return;
         }
 
+        // Disable the puzzle scripts and the back button
         currentPuzzle.DeactivatePuzzle();
         puzzleBackButton.SetActive(false);
 
         ResetCameraInputState();
 
+        // If the puzzle was brought up to camera, return the puzzle to its original position
         if (currentPuzzle.viewMode == PuzzleViewMode.BringPuzzleToCamera)
         {
             currentPuzzle.RestoreOriginalTransform();
+
             currentPuzzle = null;
             returningFromPuzzle = false;
             SetNodePuzzleAccess(camNode);
+
             state = CameraState.Idle;
             return;
         }
 
+        // If the camera was moved to the puzzle, bring the camera back to its original node
+        // Actual movement is done through Update()
         returningFromPuzzle = true;
         state = CameraState.PuzzleMoving;
 
@@ -500,6 +541,7 @@ public class MainCamera : MonoBehaviour
         elapsedTime = 0f;
     }
 
+    // Enables or disables puzzle interaction based on current node
     private void SetNodePuzzleAccess(CameraNode node)
     {
         foreach (var puzzle in allPuzzles)
@@ -509,6 +551,7 @@ public class MainCamera : MonoBehaviour
         }
     }
 
+    // Resets camera variables such as momentum, cursor, and the movement state to prevent unexpected behavior
     private void ResetCameraInputState()
     {
         momentum = Vector2.zero;
@@ -517,9 +560,10 @@ public class MainCamera : MonoBehaviour
         state = CameraState.Idle;
     }
 
+    // Returns mouse position
     private Vector2 GetMouseScreenPosition()
     {
-        return Mouse.current.position.ReadValue();
+        return mousePosIA.ReadValue<Vector2>();
     }
 
     void OnDisable()
