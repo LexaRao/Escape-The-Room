@@ -10,6 +10,7 @@ public class VentInteractable : MonoBehaviour
 
     [Header("State")]
     public bool ventClicked = false;
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -18,22 +19,30 @@ public class VentInteractable : MonoBehaviour
 =======
 
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
+>>>>>>> Stashed changes
     private float lastClickTime = 0f;
 
     private Renderer objectRenderer;
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
     [Header("Audio Settings")]
     public AudioSource ventAudioSource;
 
     [Header("Debugging Mode Supported")]
     public bool debuggingMode = false;
 
+<<<<<<< Updated upstream
 =======
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
 =======
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
+>>>>>>> Stashed changes
     void Start()
     {
         if (targetCamera == null)
@@ -42,8 +51,11 @@ public class VentInteractable : MonoBehaviour
         objectRenderer = GetComponentInChildren<Renderer>();
 
         // Load saved state
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
         if (debuggingMode == true) // If debugging mode is turned on load the game at start state.
         {
             PlayerPrefs.SetInt("VentClicked", 0);
@@ -53,6 +65,7 @@ public class VentInteractable : MonoBehaviour
             {
                 ventClicked = true;
             }
+<<<<<<< Updated upstream
 =======
         if (PlayerPrefs.GetInt("VentClicked", 0) == 1)
         {
@@ -63,6 +76,8 @@ public class VentInteractable : MonoBehaviour
         {
             ventClicked = true;
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
+>>>>>>> Stashed changes
         }
     }
 
@@ -127,8 +142,11 @@ public class VentInteractable : MonoBehaviour
         // Example:
         // SceneManager.LoadScene("NextScene");
         // or enable movement script
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
 
         // Todo: Play back scene of a cracking of a vent and then the noise of a character talking back.  
         AudioSource ventPlayer = ventAudioSource.GetComponent<AudioSource>();
@@ -136,9 +154,12 @@ public class VentInteractable : MonoBehaviour
         {
             ventPlayer.Play(); // Play back the vent shadder noise on click.
         }
+<<<<<<< Updated upstream
 =======
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
 =======
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
+>>>>>>> Stashed changes
     }
 }

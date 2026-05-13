@@ -1,0 +1,15 @@
+{
+  "blender_path": "C:/Program Files/Blender Foundation/Blender/blender.exe",
+
+  "output_dir": "unity_assets",
+
+  "default_model_name": "model",
+
+  "pipeline": "HDRP",
+
+  "materials": {
+    "wood": "HDRP/Lit",
+    "brass": "HDRP/Lit",
+    "red_inset": "HDRP/Lit"
+  }
+}

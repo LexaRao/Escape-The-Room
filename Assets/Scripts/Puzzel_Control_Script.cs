@@ -32,6 +32,7 @@ public class ChildKeyInputHandler : MonoBehaviour
     private AudioSource audioSource;
     private Camera mainCamera;
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< HEAD
     [Tooltip("Debugging Mode Supported")]
@@ -41,6 +42,11 @@ public class ChildKeyInputHandler : MonoBehaviour
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
 =======
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
+    [Tooltip("Debugging Mode Supported")]
+    public bool debuggingMode = false;
+
+>>>>>>> Stashed changes
     // Local data storing the keys typed so far.
     private string keysTyped = string.Empty;
 
@@ -50,8 +56,11 @@ public class ChildKeyInputHandler : MonoBehaviour
     private float lastInputTime;
     private string lastAddedKey = string.Empty;
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
     // Created By: Lexa hope.
     // Note: Destructor used for delete elements of the scene after the scene has expired. 
     private void sysDestructor()
@@ -74,6 +83,7 @@ public class ChildKeyInputHandler : MonoBehaviour
         // Create the system to ensure locking works as intended.
         PlayerPrefs.SetString("PuzzleControlSystemCode", string.Empty);
         PlayerPrefs.SetInt("PuzzleControlSystemInitialized", 1);
+<<<<<<< Updated upstream
 =======
 =======
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
@@ -85,6 +95,8 @@ public class ChildKeyInputHandler : MonoBehaviour
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
 =======
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
+>>>>>>> Stashed changes
 
         // Move on to audio setup.
         EnsureAudioSource();
@@ -104,6 +116,7 @@ public class ChildKeyInputHandler : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             ProcessMouseClick();
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< HEAD
             SearchForValidSequence();
@@ -118,6 +131,10 @@ public class ChildKeyInputHandler : MonoBehaviour
 
         SearchForValidSequence();
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
+            SearchForValidSequence();
+        }
+>>>>>>> Stashed changes
     }
 
     private void ProcessMouseClick()
@@ -281,6 +298,7 @@ public class ChildKeyInputHandler : MonoBehaviour
             return;
         }
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< HEAD
         bool hasValidPrefix = false;
@@ -295,6 +313,10 @@ public class ChildKeyInputHandler : MonoBehaviour
 
         bool validPrefix = false;
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
+        bool hasValidPrefix = false;
+
+>>>>>>> Stashed changes
         foreach (string sequence in validKeySequences)
         {
             if (string.IsNullOrEmpty(sequence))
@@ -302,8 +324,11 @@ public class ChildKeyInputHandler : MonoBehaviour
                 continue;
             }
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
             // Exact match → update stored code and load scene.
             if (sequence == keysTyped)
             {
@@ -375,6 +400,7 @@ public class ChildKeyInputHandler : MonoBehaviour
 
         // Save the current code string back to PlayerPrefs for the next scene to read.
         PlayerPrefs.SetString("PuzzleControlSystemCode", priorCodeString);
+<<<<<<< Updated upstream
 =======
 =======
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
@@ -417,5 +443,7 @@ public class ChildKeyInputHandler : MonoBehaviour
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
 =======
 >>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
+>>>>>>> Stashed changes
     }
 }
