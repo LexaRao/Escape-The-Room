@@ -109,11 +109,14 @@ public class MainCamera : MonoBehaviour
 
     private void Start()
     {
+<<<<<<< HEAD
         // Set the value for move duration.
         foundConnection.moveDuration = 1.0f;
         foundConnection.rotationDelay = 0.2f;
 
 
+=======
+>>>>>>> f0a8c5930e5995cdace1c13cf5804129b2d34f49
         // If a starting location was not assigned
         if (camSpot == null)
         {
@@ -383,6 +386,7 @@ public class MainCamera : MonoBehaviour
      * Parameter is hit camera node's collider.
      * Move camera's position and rotation to camera Node, and save its collider.
      */
+<<<<<<< HEAD
    void MoveCameraToHitNode(Collider hitColl)
     {
         state = CameraState.Moving;
@@ -390,6 +394,12 @@ public class MainCamera : MonoBehaviour
         // Update camSpot immediately so camera knows where to move
         camSpot = targetNode.transform;
 
+=======
+    void MoveCameraToHitNode(Collider hitColl)
+    {
+        state = CameraState.Moving;
+
+>>>>>>> f0a8c5930e5995cdace1c13cf5804129b2d34f49
         SetNodePuzzleAccess(null);
 
         momentum = Vector2.zero;
@@ -403,7 +413,11 @@ public class MainCamera : MonoBehaviour
         endMovePos = targetNode.getPosition();
         endMoveRot = targetNode.transform.rotation;
 
+<<<<<<< HEAD
         // Assign new collider and disable it to avoid blocking raycasts
+=======
+        // Re-set the current node collider to what was hit and disable it to prevent raycast interference
+>>>>>>> f0a8c5930e5995cdace1c13cf5804129b2d34f49
         currentNodeCollider = hitColl;
         if (currentNodeCollider != null)
         {
@@ -411,23 +425,32 @@ public class MainCamera : MonoBehaviour
         }
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> f0a8c5930e5995cdace1c13cf5804129b2d34f49
     /*
      * Is called every frame.
      * Parameter is rotation, which is determined by pitch and yaw variables, which change with mouse drag.
      */
     void RotateCamera(Quaternion rotation)
     {
+<<<<<<< HEAD
         // Do NOT override movement while transitioning
         if (state == CameraState.Moving || state == CameraState.PuzzleMoving)
             return;
 
         // Normal rotation behavior
+=======
+>>>>>>> f0a8c5930e5995cdace1c13cf5804129b2d34f49
         mainCam.transform.position = camSpot.position;
         mainCam.transform.rotation = rotation;
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> f0a8c5930e5995cdace1c13cf5804129b2d34f49
     void PuzzleClickedOn(PuzzleObj p)
     {
         Debug.Log("Puzzle was double clicked on and is now moving to view");

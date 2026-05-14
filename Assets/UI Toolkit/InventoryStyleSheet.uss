@@ -3,9 +3,15 @@
 
 .button {
     align-self: flex-end;
+<<<<<<< HEAD
     width: 200px;
     height: 200px;
     margin-top: 50px;
+=======
+    width: 175px;
+    height: 175px;
+    margin-top: 30px;
+>>>>>>> f0a8c5930e5995cdace1c13cf5804129b2d34f49
     margin-right: 50px;
     background-color: rgb(72, 72, 72);
     border-top-left-radius: 20px;

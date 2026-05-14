@@ -10,16 +10,67 @@ public class VentInteractable : MonoBehaviour
 
     [Header("State")]
     public bool ventClicked = false;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+=======
+<<<<<<< Updated upstream
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
+
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
+>>>>>>> Stashed changes
+>>>>>>> Lexa-Room0
+>>>>>>> 418fd7fd9f1e9ac4edd46e6f334b3ad52208b29c
+>>>>>>> f0a8c5930e5995cdace1c13cf5804129b2d34f49
     private float lastClickTime = 0f;
 
     private Renderer objectRenderer;
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+>>>>>>> Lexa-Room0
+>>>>>>> 418fd7fd9f1e9ac4edd46e6f334b3ad52208b29c
+>>>>>>> f0a8c5930e5995cdace1c13cf5804129b2d34f49
     [Header("Audio Settings")]
     public AudioSource ventAudioSource;
 
     [Header("Debugging Mode Supported")]
     public bool debuggingMode = false;
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
+>>>>>>> Stashed changes
+>>>>>>> Lexa-Room0
+>>>>>>> 418fd7fd9f1e9ac4edd46e6f334b3ad52208b29c
+>>>>>>> f0a8c5930e5995cdace1c13cf5804129b2d34f49
     void Start()
     {
         if (targetCamera == null)
@@ -28,15 +79,62 @@ public class VentInteractable : MonoBehaviour
         objectRenderer = GetComponentInChildren<Renderer>();
 
         // Load saved state
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f0a8c5930e5995cdace1c13cf5804129b2d34f49
         if (debuggingMode == true) // If debugging mode is turned on load the game at start state.
         {
             PlayerPrefs.SetInt("VentClicked", 0);
             ventClicked = false;
         } else { // Otherwise, restore the game history.
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+        if (debuggingMode == true)
+=======
+<<<<<<< Updated upstream
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+        if (debuggingMode == true) // If debugging mode is turned on load the game at start state.
+>>>>>>> Lexa-Room0
+        {
+            PlayerPrefs.SetInt("VentClicked", 0);
+            ventClicked = false;
+        }
+        else
+        {
+>>>>>>> 418fd7fd9f1e9ac4edd46e6f334b3ad52208b29c
+>>>>>>> f0a8c5930e5995cdace1c13cf5804129b2d34f49
             if (PlayerPrefs.GetInt("VentClicked", 0) == 1)
             {
                 ventClicked = true;
             }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+=======
+        if (PlayerPrefs.GetInt("VentClicked", 0) == 1)
+        {
+            ventClicked = true;
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
+        if (PlayerPrefs.GetInt("VentClicked", 0) == 1)
+        {
+            ventClicked = true;
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
+>>>>>>> Stashed changes
+>>>>>>> Lexa-Room0
+>>>>>>> 418fd7fd9f1e9ac4edd46e6f334b3ad52208b29c
+>>>>>>> f0a8c5930e5995cdace1c13cf5804129b2d34f49
         }
     }
 
@@ -97,16 +195,59 @@ public class VentInteractable : MonoBehaviour
 
         Debug.Log("Vent clicked! Player can now exit scene.");
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        if (ventAudioSource != null)
+=======
+>>>>>>> 418fd7fd9f1e9ac4edd46e6f334b3ad52208b29c
+>>>>>>> f0a8c5930e5995cdace1c13cf5804129b2d34f49
         // Optional: trigger next phase here
         // Example:
         // SceneManager.LoadScene("NextScene");
         // or enable movement script
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+>>>>>>> 418fd7fd9f1e9ac4edd46e6f334b3ad52208b29c
+>>>>>>> f0a8c5930e5995cdace1c13cf5804129b2d34f49
 
         // Todo: Play back scene of a cracking of a vent and then the noise of a character talking back.  
         AudioSource ventPlayer = ventAudioSource.GetComponent<AudioSource>();
         if (ventPlayer != null)
+<<<<<<< HEAD
         {
             ventPlayer.Play(); // Play back the vent shadder noise on click.
         }
+=======
+<<<<<<< HEAD
+        {
+            ventPlayer.Play(); // Play back the vent shadder noise on click.
+        }
+=======
+>>>>>>> Lexa-Room0
+        {
+            ventAudioSource.Play();
+        }
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
+>>>>>>> dbaf82884805f1e5cd70d4d43b7eb51d64eb1aea
+=======
+>>>>>>> Stashed changes
+>>>>>>> Lexa-Room0
+>>>>>>> 418fd7fd9f1e9ac4edd46e6f334b3ad52208b29c
+>>>>>>> f0a8c5930e5995cdace1c13cf5804129b2d34f49
     }
 }
