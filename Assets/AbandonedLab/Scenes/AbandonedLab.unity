@@ -750,12 +750,12 @@ GameObject:
   - component: {fileID: 144337058}
   - component: {fileID: 144337057}
   m_Layer: 5
-  m_Name: BackButton
+  m_Name: BackButtonCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &144337057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3350,7 +3350,8 @@ MonoBehaviour:
   - targetNode: {fileID: 2069409185}
     moveDuration: 3
     rotationDelay: 0.5
-  puzzlesAtNode: []
+  puzzlesAtNode:
+  - {fileID: 2106120112}
 --- !u!135 &900938946
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -6879,7 +6880,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1487317397}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e76a643e64f61434694bf81fe3727ad9, type: 3}
   m_Name: 
@@ -6887,7 +6888,7 @@ MonoBehaviour:
   puzzleNumber: 0
   promptMessage: Press E to Interact
   drawerTransform: {fileID: 1487317404}
-  keyCardObject: {fileID: 0}
+  keyCardObject: {fileID: 2106120108}
   slideDistance: -0.5
   slideSpeed: 2
 --- !u!1 &1546134354
@@ -7755,7 +7756,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1699952693
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8115,7 +8116,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1728361191}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 35403fb7fbfaf68478ee942a67aa6bf9, type: 3}
   m_Name: 
@@ -9985,7 +9986,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2106120110}
   - component: {fileID: 2106120109}
-  m_Layer: 0
+  - component: {fileID: 2106120112}
+  - component: {fileID: 2106120111}
+  m_Layer: 7
   m_Name: MazePuzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9999,7 +10002,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2106120108}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ea1d3de996f4ac4796e6c067c1406b4, type: 3}
   m_Name: 
@@ -10014,15 +10017,58 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2106120108}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.318, y: 0.601, z: 3.045}
+  m_LocalRotation: {x: -0, y: -0.5159146, z: -0, w: 0.85664004}
+  m_LocalPosition: {x: -2.2980099, y: 0.958, z: 3.8953617}
   m_LocalScale: {x: 0.06, y: 0.06, z: 0.06}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1972596054}
   - {fileID: 1728361192}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -62.117, z: 0}
+--- !u!65 &2106120111
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106120108}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 10.414479, y: 2.0634418, z: 10.004366}
+  m_Center: {x: 1.0012652, y: 0.5317203, z: -0.15835564}
+--- !u!114 &2106120112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106120108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80481efddf2850548aa0f4d8ceb07d69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PuzzleObj
+  viewMode: 1
+  puzzleViewSpot: {fileID: 2106120110}
+  moveDuration: 1
+  pickupDistanceFromCamera: 1
+  pickupVerticalOffset: 0
+  pickupRotation: {x: -50, y: 0, z: 0}
+  puzzleScripts:
+  - {fileID: 2106120109}
+  - {fileID: 1728361193}
+  necessaryNode: {fileID: 900938945}
 --- !u!23 &15533525762006024
 MeshRenderer:
   m_ObjectHideFlags: 0
