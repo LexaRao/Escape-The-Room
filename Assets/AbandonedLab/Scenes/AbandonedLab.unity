@@ -300,6 +300,74 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3a2e9c7a879b7d41b29957e6f9ed6c0, type: 3}
+--- !u!1 &45476393
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 45476396}
+  - component: {fileID: 45476395}
+  - component: {fileID: 45476394}
+  m_Layer: 5
+  m_Name: EndMenu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &45476394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45476393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31d004fa43174c247946cb17b8deb847, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MainMenuEvents
+--- !u!114 &45476395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45476393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: 7db83c143bd6cb5489d0c51e94d40aae, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 673fa4a3f5d4b56438e13f9871600208, type: 3}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!4 &45476396
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45476393}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &76421327
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,6 +380,8 @@ GameObject:
   - component: {fileID: 76421330}
   - component: {fileID: 76421329}
   - component: {fileID: 76421328}
+  - component: {fileID: 76421333}
+  - component: {fileID: 76421332}
   m_Layer: 6
   m_Name: Node_Finish
   m_TagString: Untagged
@@ -443,13 +513,56 @@ Transform:
   m_GameObject: {fileID: 76421327}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -5.86, y: 1.665, z: -0.311}
+  m_LocalPosition: {x: -2.519, y: 1.665, z: -0.311}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1981957287}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!114 &76421332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 76421327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53a1fed23c2ccb54ca76c0c4dc0ae8be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraNode
+  yawLimits: {x: 0, y: 0}
+  pitchLimits: {x: 0, y: 0}
+  hasYawLimits: 0
+  connections:
+  - targetNode: {fileID: 843396242}
+    moveDuration: 3
+    rotationDelay: 0.5
+  - targetNode: {fileID: 1556427499}
+    moveDuration: 3
+    rotationDelay: 0.5
+  - targetNode: {fileID: 900938945}
+    moveDuration: 3
+    rotationDelay: 0.5
+  - targetNode: {fileID: 2069409185}
+    moveDuration: 3
+    rotationDelay: 0.5
+  puzzlesAtNode: []
+--- !u!114 &76421333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 76421327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e58d42099cff7f40a3c949f1b2f0a0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraNodeClick
+  endMenu: {fileID: 45476393}
+  delay: 4
 --- !u!1001 &87337909
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2949,6 +3062,9 @@ MonoBehaviour:
   - targetNode: {fileID: 2069409185}
     moveDuration: 3
     rotationDelay: 0.5
+  - targetNode: {fileID: 76421332}
+    moveDuration: 3
+    rotationDelay: 0.5
   puzzlesAtNode: []
 --- !u!135 &843396243
 SphereCollider:
@@ -3348,6 +3464,9 @@ MonoBehaviour:
     moveDuration: 3
     rotationDelay: 0.5
   - targetNode: {fileID: 2069409185}
+    moveDuration: 3
+    rotationDelay: 0.5
+  - targetNode: {fileID: 76421332}
     moveDuration: 3
     rotationDelay: 0.5
   puzzlesAtNode: []
@@ -4330,7 +4449,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1016414148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7089,6 +7208,9 @@ MonoBehaviour:
   - targetNode: {fileID: 2069409185}
     moveDuration: 3
     rotationDelay: 0.5
+  - targetNode: {fileID: 76421332}
+    moveDuration: 3
+    rotationDelay: 0.5
   puzzlesAtNode: []
 --- !u!135 &1556427500
 SphereCollider:
@@ -7532,7 +7654,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1613662743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8771,7 +8893,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1909520497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9301,7 +9423,7 @@ Transform:
   m_GameObject: {fileID: 1981957286}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.181, y: 0, z: 2.584}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9708,6 +9830,9 @@ MonoBehaviour:
     moveDuration: 3
     rotationDelay: 0.5
   - targetNode: {fileID: 1556427499}
+    moveDuration: 3
+    rotationDelay: 0.5
+  - targetNode: {fileID: 76421332}
     moveDuration: 3
     rotationDelay: 0.5
   puzzlesAtNode: []
@@ -12711,6 +12836,7 @@ SceneRoots:
   - {fileID: 1016414149}
   - {fileID: 1909520499}
   - {fileID: 1613662745}
+  - {fileID: 45476396}
   - {fileID: 144337060}
   - {fileID: 1559219318}
   - {fileID: 1011699909}
