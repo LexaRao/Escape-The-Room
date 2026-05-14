@@ -61,8 +61,7 @@ public class TerminalPuzzle : PuzzleInteractable
 
         if (finalDoor != null)
         {
-            // Simple version: door disappears
-            finalDoor.SetActive(false);
+            finalDoor.transform.Rotate(0f, -90f, 0f);
             Debug.Log("ESCAPED! Final door open!");
         }
         else

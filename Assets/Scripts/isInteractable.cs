@@ -1,23 +1,11 @@
-using System;
-using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Renderer))]
 [RequireComponent(typeof(Collider))]
-
 public class isInteractable : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    [Header("Glow Settings")]
-    [ColorUsage(true, true)]
-    public Color glowColor = Color.cyan;
-    public float glowIntensity = 2f;
+    [Header("Hover Color Settings")]
+    public Color hoverColor = Color.cyan;
     public float lerpSpeed = 8f;
 
     [Header("Raycast Settings")]
@@ -26,38 +14,34 @@ public class isInteractable : MonoBehaviour
 
     private Renderer rend;
     private Material mat;
-
-    private Color originalEmission;
-    private Color targetEmission;
-    private bool isHovered;
+    private Color originalColor;
+    private Color targetColor;
 
     private static isInteractable currentlyHovered;
 
     void Awake()
     {
-        rend = GetComponent<Renderer>();
-        mat = rend.material;
+        rend = GetComponentInChildren<Renderer>();
+
+        if (rend == null)
+        {
+            Debug.LogError($"{gameObject.name} has no Renderer.");
+            enabled = false;
+            return;
+        }
+
+        mat = rend.material; // creates instance so it won’t affect others
+        originalColor = mat.color;
+        targetColor = originalColor;
 
         if (targetCamera == null)
             targetCamera = Camera.main;
-
-        if (mat.HasProperty("_EmissionColor"))
-        {
-            mat.EnableKeyword("_EMISSION");
-            originalEmission = mat.GetColor("_EmissionColor");
-            targetEmission = originalEmission;
-        }
-        else
-        {
-            Debug.LogWarning($"{gameObject.name} material does not support _EmissionColor.");
-        }
     }
 
-    // Update is called once per frame
     void Update()
     {
         UpdateHoverState();
-        UpdateGlow();
+        UpdateColor();
     }
 
     private void UpdateHoverState()
@@ -72,7 +56,7 @@ public class isInteractable : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, rayDistance))
         {
-            hitHover = hit.collider.GetComponent<isInteractable>();
+            hitHover = hit.collider.GetComponentInParent<isInteractable>();
         }
 
         if (currentlyHovered != hitHover)
@@ -89,43 +73,24 @@ public class isInteractable : MonoBehaviour
 
     private void SetHovered(bool hovered)
     {
-        isHovered = hovered;
-        targetEmission = isHovered ? glowColor * glowIntensity : originalEmission;
+        targetColor = hovered ? hoverColor * 3f : originalColor;
     }
 
-    private void UpdateGlow()
+    private void UpdateColor()
     {
-        if (!mat.HasProperty("_EmissionColor"))
-            return;
-
-        Color currentEmission = mat.GetColor("_EmissionColor");
-        Color newEmission = Color.Lerp(currentEmission, targetEmission, Time.deltaTime * lerpSpeed);
-        mat.SetColor("_EmissionColor", newEmission);
+        mat.color = Color.Lerp(
+            mat.color,
+            targetColor,
+            Time.deltaTime * lerpSpeed
+        );
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
-        if (currentlyHovered != null)
+        if (currentlyHovered == this)
             currentlyHovered = null;
 
-        if (mat != null && mat.HasProperty("_EmissionColor"))
-        {
-            mat.SetColor("_EmissionColor", originalEmission);
-        }
-    }
-
-    private class HoverGlowInputSystem
-    {
-        bool isHovered;
-        internal void SetHovered(bool v)
-        {
-            isHovered = v;
-        }
-
-        internal bool GetHovered()
-        {
-            return isHovered;
-        }
+        if (mat != null)
+            mat.color = originalColor;
     }
 }
-
