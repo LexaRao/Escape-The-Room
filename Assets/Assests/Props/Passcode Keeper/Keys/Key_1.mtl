@@ -1,0 +1,22 @@
+# Blender 5.0.1 MTL File: 'Key_1.blend'
+# www.blender.org
+
+newmtl Copilot_20260426_174201
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 2
+map_Kd C:/Users/lexah/Downloads/Copilot_20260426_174201.png
+map_d C:/Users/lexah/Downloads/Copilot_20260426_174201.png
+
+newmtl Material
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.030566 0.006145 0.019791
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2

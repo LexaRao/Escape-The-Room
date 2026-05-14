@@ -25,3 +25,6 @@ The target audiences of the game are young adults and kids.  The goal is to keep
 Fig 1: An image of the game prototype.
 
 The goals of this section are to document the look and feel of the project.  The project will be based on the goal of being able to escape a room by solving subpuzzles.  These puzzles lead to large puzzles.  This will lead to other rooms.  The hope is that you will be able to escape the room by doing this.  Over the long run, this will allow you to learn a lot from the experiences.  The game uses recursive substructures and mapping to allow the character to move through the game.  The hope is that they will learn a lot in the process of playing the game as a direct result.
+
+# Level 0:
+The goals of the game at level 0 are to finish all four of the obstacles in a linear fashion.  First, the character is forced to unlock a vent and look inside.  Then the main character is forced to review a fake message their mind makes up.  Then, the character is forced to solve a puzzle.  After that, the character is forced to unlock a code based on the clues from before.  Then the character gets transported to the next room.  This means the puzzle at this level is solved.
