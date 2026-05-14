@@ -6,7 +6,10 @@ using UnityEngine.InputSystem;
 public sealed class MazeController : MonoBehaviour
 {
     [SerializeField] private float rotationSpeed = 50f;
-    [SerializeField] private float maxRotation = 10f;
+    [SerializeField] private float maxRotation = 180f;
+
+    private float baseX = -50f;
+    private float baseZ = 0f;
 
     private float rotationX;
     private float rotationZ;
@@ -14,18 +17,21 @@ public sealed class MazeController : MonoBehaviour
     private void Start()
     {
         Vector3 initialRotation = transform.localEulerAngles;
-        rotationX = NormalizeAngle(initialRotation.x);
-        rotationZ = NormalizeAngle(initialRotation.z);
+        //rotationX = NormalizeAngle(/*initialRotation.x*/50);
+        //rotationZ = NormalizeAngle(/*initialRotation.z*/0);
+
+        rotationX = 0f;
+        rotationZ = 0f;
     }
 
     private void Update()
     {
         Vector2 input = GetMoveInput();
 
-        rotationX = Mathf.Clamp(rotationX + input.y * rotationSpeed * Time.deltaTime, -maxRotation, maxRotation);
-        rotationZ = Mathf.Clamp(rotationZ - input.x * rotationSpeed * Time.deltaTime, -maxRotation, maxRotation);
+        rotationX = Mathf.Clamp(rotationX + input.y * rotationSpeed * Time.deltaTime, -180f, 180f); //-maxRotation, maxRotation);
+        rotationZ = Mathf.Clamp(rotationZ - input.x * rotationSpeed * Time.deltaTime, -180f, 180f); //-maxRotation, maxRotation);
 
-        transform.localRotation = Quaternion.Euler(rotationX, transform.localEulerAngles.y, rotationZ);
+        transform.localRotation = Quaternion.Euler(baseX + rotationX, 0f, baseZ + rotationZ);
     }
 
     private static Vector2 GetMoveInput()
